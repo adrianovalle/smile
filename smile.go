@@ -6,7 +6,6 @@ import (
 	"os/exec"
 	"strings"
 	"io/ioutil"
-	
 )
 
 func check(e error) {
@@ -21,9 +20,6 @@ func boolYesNo(value bool) string{
 		return "no"
 	}		
 }
-//func createFile(){
-//	ioutil.WriteFile(e
-//}
 
 func execute(cmd string) {
 
@@ -38,9 +34,28 @@ func execute(cmd string) {
 	fmt.Printf("%s", out)
 
 }
-func createWifiConfig(wifiUser string, wifiPass string, hidden bool, wifiInterface string) {
 
-	data:=[]byte(wifiUser  +"\n"+
+
+
+func createWifiConfig(wifiInterface string, connectionType string, wifiSecurity string, essid string, ipMode string, wifiPass string, hidden bool) {
+
+	const description = "Description=Configuration file created by smile 0.0.0"
+	const descInterface = "Interface="
+	const descConnectionType = "Connection="
+	const descWifiSecurity = "Security="
+	const descESSID = "ESSID="
+	const descIPMode = "IP="
+	const descWifiPass = "Key="
+	const descHidden = "Hidden="
+
+
+
+
+
+	data:=[]byte(wifiInterface
+
+
+		     wifiUser  +"\n"+
 		     wifiPass  +"\n"+
 		     boolYesNo(hidden)    +"\n"+
 		     wifiInterface  +"\n")
@@ -74,8 +89,7 @@ func main() {
 
 	execute("loadkeys br-abnt2")
 	createWifiConfig(wifiUser,wifiPass,hidden,wifiInterface)
-	//execute("wifi-menu")
-	//netctl start wifiInterface
+	//netctl start wifiInterface  //substitui o wifi-menu
 	//timedatectl set-ntp true
 	//lsblk
 	//createPartitionTable(wifiInterface)
