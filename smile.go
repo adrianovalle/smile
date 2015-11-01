@@ -1,4 +1,6 @@
 // smile
+
+
 package main
 
 import (
@@ -7,6 +9,8 @@ import (
 	"strings"
 	"io/ioutil"
 )
+
+const version ="0.0.0"
 
 func check(e error) {
 	if e != nil {
@@ -49,32 +53,34 @@ type ConnectionProfile struct{
 
 func createWifiConfig(connProfile *ConnectionProfile) {
 
-	const description = "Description=Configuration file created by smile 0.0.0"
-	const descInterface = "Interface="
+	const description = "Description=Configuration file created by smile " + version
+	const descWifiInterface = "Interface="
 	const descConnectionType = "Connection="
 	const descWifiSecurityType = "Security="
-	const descESSID = "ESSID="
-	const descIPMode = "IP="
+	const descEssid = "ESSID="
+	const descIpMode = "IP="
 	const descWifiPass = "Key="
 	const descHidden = "Hidden="
 
 
-	data:=[]byte(wifiInterface
+	data:=[]byte(description +"\n"+
 
+		     descWifiInterface + connProfile.wifiInterface +"\n"+
 
-		     wifiUser  +"\n"+
-		     wifiPass  +"\n"+
-		     boolYesNo(hidden)    +"\n"+
-		     wifiInterface  +"\n")
+		     descConnectionType + connProfile.connectionType +"\n"+
+
+		     descWifiSecurityType + connProfile.wifiSecurityType +"\n"+
+
+		     descEssid + connProfile.essid +"\n"+
+
+		     descIpMode + connProfile.ipMode +"\n"+
+
+		     descWifiPass + connProfile.wifiPassword +"\n"+
+
+		     descHidden + connProfile.hidden
 
 	err:=ioutil.WriteFile("teste.txt",data,0777)
 	check(err)
-
-	fmt.Printf("%s\n", wifiUser)
-	fmt.Printf("%s\n", wifiPass)
-	fmt.Printf("%v\n", hidden)
-	fmt.Printf("%s\n", wifiInterface)
-
 
 
 }
@@ -89,12 +95,8 @@ func createPartitionTable(device string){
 
 func main() {
 
-	wifiUser := "usuario"
-	wifiPass := "senha"
-	hidden := true
-	wifiInterface := "wlp2s0"
-
-	execute("loadkeys br-abnt2")
+	connProfile:={
+//	execute("loadkeys br-abnt2")
 	createWifiConfig(wifiUser,wifiPass,hidden,wifiInterface)
 	//netctl start wifiInterface  //substitui o wifi-menu
 	//timedatectl set-ntp true
