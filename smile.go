@@ -17,6 +17,7 @@ func check(e error) {
 		panic(e)
 	}	
 }
+
 func boolYesNo(value bool) string{
 	if value == true{
 		return "yes"
@@ -47,11 +48,12 @@ type ConnectionProfile struct{
 	essid		 string
 	ipMode		 string
 	wifiPassword	 string
-	hidden		 string
+	hidden		 bool
+
 
 }
 
-func createWifiConfig(connProfile *ConnectionProfile) {
+func (connProfile *ConnectionProfile) writeWifiConfigToFile(nameProfile string) {
 
 	const description = "Description=Configuration file created by smile " + version
 	const descWifiInterface = "Interface="
@@ -77,9 +79,10 @@ func createWifiConfig(connProfile *ConnectionProfile) {
 
 		     descWifiPass + connProfile.wifiPassword +"\n"+
 
-		     descHidden + connProfile.hidden
+		     descHidden + boolYesNo(connProfile.hidden))
 
-	err:=ioutil.WriteFile("teste.txt",data,0777)
+
+	err:=ioutil.WriteFile(nameProfile,data,0777)
 	check(err)
 
 
@@ -94,10 +97,16 @@ func createPartitionTable(device string){
 }
 
 func main() {
-
-	connProfile:={
+	wifiInterface := "wlp2s0"
+	connectionType:= "wireless"
+	wifiSecurityType :="wpa"
+	essid := ""
+	ipMode := "dhcp"
+	wifiPassword := ""
+	hidden := true
+	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
 //	execute("loadkeys br-abnt2")
-	createWifiConfig(wifiUser,wifiPass,hidden,wifiInterface)
+	connProfile.writeWifiConfigToFile("teste.txt")
 	//netctl start wifiInterface  //substitui o wifi-menu
 	//timedatectl set-ntp true
 	//lsblk
