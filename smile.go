@@ -35,21 +35,28 @@ func execute(cmd string) {
 
 }
 
+type ConnectionProfile struct{
 
+	wifiInterface    string
+	connectionType   string	
+	wifiSecurityType string
+	essid		 string
+	ipMode		 string
+	wifiPassword	 string
+	hidden		 string
 
-func createWifiConfig(wifiInterface string, connectionType string, wifiSecurity string, essid string, ipMode string, wifiPass string, hidden bool) {
+}
+
+func createWifiConfig(connProfile *ConnectionProfile) {
 
 	const description = "Description=Configuration file created by smile 0.0.0"
 	const descInterface = "Interface="
 	const descConnectionType = "Connection="
-	const descWifiSecurity = "Security="
+	const descWifiSecurityType = "Security="
 	const descESSID = "ESSID="
 	const descIPMode = "IP="
 	const descWifiPass = "Key="
 	const descHidden = "Hidden="
-
-
-
 
 
 	data:=[]byte(wifiInterface
