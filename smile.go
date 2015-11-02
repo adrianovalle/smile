@@ -53,7 +53,7 @@ type ConnectionProfile struct{
 
 }
 
-func (connProfile *ConnectionProfile) writeWifiConfigToFile(nameProfile string) {
+func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder string, nameProfile string) {
 
 	const description = "Description=Configuration file created by smile " + version
 	const descWifiInterface = "Interface="
@@ -83,6 +83,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(nameProfile string) 
 
 
 	err:=ioutil.WriteFile(nameProfile,data,0777)
+	execute("cp", destinationFolder,nameProfile)
 	check(err)
 
 
@@ -106,7 +107,7 @@ func main() {
 	hidden := true
 	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
 //	execute("loadkeys br-abnt2")
-	connProfile.writeWifiConfigToFile("teste.txt")
+	connProfile.writeWifiConfigToFile("/etc/netctl", "teste.txt")
 	//netctl start wifiInterface  //substitui o wifi-menu
 	//timedatectl set-ntp true
 	//lsblk
