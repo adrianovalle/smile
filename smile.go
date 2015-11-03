@@ -10,7 +10,7 @@ import (
 	"io/ioutil"
 )
 
-const version ="0.0.0"
+const version ="0.22.0"
 
 func check(e error) {
 	if e != nil {
