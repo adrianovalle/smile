@@ -83,7 +83,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 
 	err:=ioutil.WriteFile(nameProfile,data,0777)
-	execute("cp", destinationFolder,nameProfile)
+	execute("cp" +  destinationFolder + "/" +nameProfile)
 	check(err)
 
 
@@ -98,6 +98,7 @@ func createPartitionTable(device string){
 }
 
 func main() {
+	fmt.Printf("Bom dia! Informe seu usuário wi-fi")
 	wifiInterface := "wlp2s0"
 	connectionType:= "wireless"
 	wifiSecurityType :="wpa"
@@ -107,7 +108,7 @@ func main() {
 	hidden := true
 	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
 //	execute("loadkeys br-abnt2")
-	connProfile.writeWifiConfigToFile("/etc/netctl", "teste.txt")
+	connProfile.writeWifiConfigToFile(".", "teste.txt")
 	//netctl start wifiInterface  //substitui o wifi-menu
 	//timedatectl set-ntp true
 	//lsblk
