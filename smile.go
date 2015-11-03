@@ -83,7 +83,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 
 	err:=ioutil.WriteFile(nameProfile,data,0777)
-	execute("cp" +  destinationFolder + "/" +nameProfile)
+//	execute("cp" +  destinationFolder + "/" +nameProfile)
 	check(err)
 
 
@@ -98,14 +98,32 @@ func createPartitionTable(device string){
 }
 
 func main() {
-	fmt.Printf("Bom dia! Informe seu usuário wi-fi")
-	wifiInterface := "wlp2s0"
-	connectionType:= "wireless"
-	wifiSecurityType :="wpa"
-	essid := ""
-	ipMode := "dhcp"
-	wifiPassword := ""
-	hidden := true
+var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
+var hidden bool
+
+	execute("clear")
+
+	fmt.Printf("Bom dia! Informe sua interface de rede \n")
+	fmt.Scanf("%s\n",&wifiInterface)
+
+	fmt.Printf("Informe o tipo de conexão \n")
+	fmt.Scanf("%s\n" ,&connectionType)
+
+	fmt.Printf("Informe a segurança wi-fi \n")
+	fmt.Scanf("%s\n", &wifiSecurityType)
+
+	fmt.Printf("Informe a identificação da rede \n")
+	fmt.Scanf("%s\n" , &essid)
+
+	fmt.Printf("Informe o modo de Ip \n")
+	fmt.Scanf("%s\n", &ipMode)
+
+	fmt.Printf("Informe a senha da rede \n")
+	fmt.Scanf("%s\n", &wifiPassword)
+
+	fmt.Printf("A rede está oculta? \n")
+	fmt.Scanf("%t\n", &hidden)
+
 	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
 //	execute("loadkeys br-abnt2")
 	connProfile.writeWifiConfigToFile(".", "teste.txt")
