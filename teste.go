@@ -38,9 +38,10 @@ func execute(cmd string) {
 
 func main() {
 
-	a:="enp3s0 wlp2s0 amor casa"
+	a:=exec.Command("ip", "link").Output
 	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
 	b:=r.FindAllString(a,-1)
+	fmt.Println(b)
 	//lsblk
 	//createPartitionTable(wifiInterface)
 	//parted
