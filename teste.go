@@ -38,8 +38,10 @@ func execute(cmd string) {
 
 func main() {
 
-	a:=exec.Command("ip", "link").Output
-	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
+	a:=exec.Command("ip","link").Output()
+//	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
+      //  a:="amor casa wlan0 wlp2s0"
+	r,_:=regexp.Compile("[a-z]{4}[0-9]")
 	b:=r.FindAllString(a,-1)
 	fmt.Println(b)
 	//lsblk
