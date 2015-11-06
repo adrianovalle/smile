@@ -30,7 +30,7 @@ func main() {
 	//	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
 	//  a:="amor casa wlan0 wlp2s0":x
 
-		r,_:=regexp.Compile("[e-w]{1}[a-z]{3}[0-9]")
+		r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
 		c:=r.FindAllString(b,-1)
 	fmt.Println(c)
 	//lsblk

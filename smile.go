@@ -11,6 +11,7 @@ import (
 )
 
 const version ="0.22.0"
+var verbose bool
 
 func check(e error) {
 	if e != nil {
@@ -26,8 +27,9 @@ func boolYesNo(value bool) string{
 	}		
 }
 
-func execute(cmd string) {
+func execute(cmd string) string {
 
+	
 	cmdLine := strings.Fields(cmd)
 	command := cmdLine[0]
 	parameters := cmdLine[1:len(cmdLine)]
@@ -35,9 +37,10 @@ func execute(cmd string) {
 	out, err := exec.Command(command, parameters...).Output()
 
 	check(err)
-
-	fmt.Printf("%s", out)
-
+	if verbose==true{
+		fmt.Printf("%s", out)
+	}
+	return out
 }
 
 type ConnectionProfile struct{
@@ -88,7 +91,11 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 
 }
+func detectNetwork() string{
+	
+	
 
+}
 func createPartitionTable(device string){
 
 
@@ -101,7 +108,7 @@ func main() {
 var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
 var hidden bool
 
-	execute("clear")
+	_=execute("clear")
 
 	fmt.Printf("Bom dia! Informe sua interface de rede \n")
 	fmt.Scanf("%s\n",&wifiInterface)
