@@ -8,6 +8,8 @@ import (
 	"os/exec"
 	"strings"
 	"io/ioutil"
+	"os"
+	"regexp"
 )
 
 const version ="0.22.0"
@@ -40,7 +42,7 @@ func execute(cmd string) string {
 	if verbose==true{
 		fmt.Printf("%s", out)
 	}
-	return out
+	return string(out)
 }
 
 type ConnectionProfile struct{
@@ -91,10 +93,25 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 
 }
-func detectNetwork() string{
-	
-	
+func copyFile(originalFileWithPath string, destinyFileWithPath string){
 
+	err := os.Rename(originalFileWithPath, destinyFileWithPath)
+
+	check(err)
+
+}
+func detectNetwork() string{
+var cmdOut,regex string
+
+	cmdOut=execute("ip link")
+	
+//	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
+
+
+	r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
+	
+	regex=r.FindAllString(cmdOut, -1)
+	return regex
 }
 func createPartitionTable(device string){
 
@@ -108,9 +125,13 @@ func main() {
 var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
 var hidden bool
 
+	verbose=true
+
 	_=execute("clear")
 
 	fmt.Printf("Bom dia! Informe sua interface de rede \n")
+	fmt.Println(detectNetwork())
+	
 	fmt.Scanf("%s\n",&wifiInterface)
 
 	fmt.Printf("Informe o tipo de conexão \n")
