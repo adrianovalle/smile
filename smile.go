@@ -29,7 +29,7 @@ func boolYesNo(value bool) string{
 	}		
 }
 
-func execute(cmd string) string {
+func execute(cmd string) []byte{
 
 	
 	cmdLine := strings.Fields(cmd)
@@ -42,7 +42,7 @@ func execute(cmd string) string {
 	if verbose==true{
 		fmt.Printf("%s", out)
 	}
-	return string(out)
+	return out
 }
 
 type ConnectionProfile struct{
@@ -101,16 +101,16 @@ func copyFile(originalFileWithPath string, destinyFileWithPath string){
 
 }
 func detectNetwork() string{
-var cmdOut,regex string
 
-	cmdOut=execute("ip link")
+
+	cmdOut:=execute("ip link")
 	
 //	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
 
 
 	r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
 	
-	regex=r.FindAllString(cmdOut, -1)
+	regex:=r.FindAllString(cmdOut, -1)
 	return regex
 }
 func createPartitionTable(device string){
