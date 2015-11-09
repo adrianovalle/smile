@@ -100,7 +100,7 @@ func copyFile(originalFileWithPath string, destinyFileWithPath string){
 	check(err)
 
 }
-func detectNetwork() string{
+func detectNetwork() []string{
 
 
 	cmdOut:=execute("ip link")
@@ -110,7 +110,7 @@ func detectNetwork() string{
 
 	r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
 	
-	regex:=r.FindAllString(cmdOut, -1)
+	regex:=r.FindAllString(string(cmdOut), -1)
 	return regex
 }
 func createPartitionTable(device string){
@@ -130,7 +130,7 @@ var hidden bool
 	_=execute("clear")
 
 	fmt.Printf("Bom dia! Informe sua interface de rede \n")
-	fmt.Println(detectNetwork())
+	fmt.Println("%s",detectNetwork())
 	
 	fmt.Scanf("%s\n",&wifiInterface)
 
