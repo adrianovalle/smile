@@ -20,6 +20,20 @@ func check(e error) {
 		panic(e)
 	}	
 }
+type wirelessSecurityType string
+
+const(
+	WPA wirelessSecurityType = "wpa"
+	WPA2 wirelessSecurityType = "wpa2"
+)
+
+func CheckWirelessSecurityType(securityType wirelessSecurityType){
+
+	switch(securityType){
+
+
+	}
+}
 
 func boolYesNo(value bool) string{
 	if value == true{
@@ -125,12 +139,13 @@ func main() {
 var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
 var hidden bool
 
-	verbose=true
+	verbose=false
 
 	_=execute("clear")
 
 	fmt.Printf("Bom dia! Informe sua interface de rede \n")
-	fmt.Println("%s",detectNetwork())
+
+	fmt.Println(detectNetwork())
 	
 	fmt.Scanf("%s\n",&wifiInterface)
 
