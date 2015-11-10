@@ -20,20 +20,27 @@ func check(e error) {
 		panic(e)
 	}	
 }
-type wirelessSecurityType string
+type WirelessSecurityType string
 
 const(
-	WPA wirelessSecurityType = "wpa"
-	WPA2 wirelessSecurityType = "wpa2"
+	WPA WirelessSecurityType = "wpa"
+	WPA2 WirelessSecurityType = "wpa2"
 )
 
-func CheckWirelessSecurityType(securityType wirelessSecurityType){
+//func CheckWirelessSecurityType(securityType wirelessSecurityType){
 
-	switch(securityType){
+//	switch(securityType){
+
+//		case WPA:
+
+			
 
 
-	}
-}
+
+//		case WPA2:
+
+//	}
+//}
 
 func boolYesNo(value bool) string{
 	if value == true{
@@ -138,6 +145,7 @@ func createPartitionTable(device string){
 func main() {
 var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
 var hidden bool
+var wifiSecurityType WirelessSecurityType
 
 	verbose=false
 
