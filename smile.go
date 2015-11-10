@@ -12,42 +12,13 @@ import (
 	"regexp"
 )
 
-const version ="0.22.0"
+const version ="0.3.0"
 var verbose bool
 
 func check(e error) {
 	if e != nil {
 		panic(e)
 	}	
-}
-type WirelessSecurityType string
-
-const(
-	WPA WirelessSecurityType = "wpa"
-	WPA2 WirelessSecurityType = "wpa2"
-)
-
-//func CheckWirelessSecurityType(securityType wirelessSecurityType){
-
-//	switch(securityType){
-
-//		case WPA:
-
-			
-
-
-
-//		case WPA2:
-
-//	}
-//}
-
-func boolYesNo(value bool) string{
-	if value == true{
-		return "yes"
-	}else{
-		return "no"
-	}		
 }
 
 func execute(cmd string) []byte{
@@ -108,8 +79,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 		     descHidden + boolYesNo(connProfile.hidden))
 
 
-	err:=ioutil.WriteFile(nameProfile,data,0777)
-//	execute("cp" +  destinationFolder + "/" +nameProfile)
+	err:=ioutil.WriteFile(destinationFolder + "/" + nameProfile,data,0777)
 	check(err)
 
 
@@ -145,7 +115,7 @@ func createPartitionTable(device string){
 func main() {
 var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
 var hidden bool
-var wifiSecurityType WirelessSecurityType
+
 
 	verbose=false
 
