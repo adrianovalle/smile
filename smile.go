@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strconv"
 )
 
 const version ="0.3.0"
@@ -76,7 +77,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		     descWifiPass + connProfile.wifiPassword +"\n"+
 
-		     descHidden + boolYesNo(connProfile.hidden))
+		     descHidden + strconv.FormatBool(connProfile.hidden))
 
 
 	err:=ioutil.WriteFile(destinationFolder + "/" + nameProfile,data,0777)
