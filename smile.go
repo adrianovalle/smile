@@ -107,79 +107,82 @@ func detectNetwork() []string{
 }
 func detectPartitionTable() []string{
 
-
-
-}
-
-func createPartitionTable(device string){
-
 	cmdOut := execute("lsblk")
-	r,_ := regexp.Compile("[s][d][a-z])")
+	r,_ := regexp.Compile("[s]{1}[d]{1}[a-z]{1}[ ]{1}")
 	regex := r.FindAllString(string(cmdOut),-1)
 	return regex
 }
 
 func main() {
-var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
-var hidden bool
+//var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
+//var hidden bool
 
 
 	verbose=false
 
 	_=execute("clear")
 
-	fmt.Printf("Bom dia! Informe sua interface de rede \n")
-	fmt.Println(detectNetwork())
-	fmt.Scanf("%s\n",&wifiInterface)
+//	fmt.Printf("Bom dia! Informe sua interface de rede \n")
+//	fmt.Println(detectNetwork())
+//	fmt.Scanf("%s\n",&wifiInterface)
 
-	fmt.Printf("Informe o tipo de conexão \n")
-	fmt.Scanf("%s\n" ,&connectionType)
+//	fmt.Printf("Informe o tipo de conexão \n")
+//	fmt.Println("[wireless ou ethernet]") 
+//	fmt.Scanf("%s\n" ,&connectionType)
+	
 
-
-	fmt.Printf("Informe a segurança wi-fi \n")
-	fmt.Scanf("%s\n", &wifiSecurityType)
-
-
-	fmt.Printf("Informe a identificação da rede \n")
-	fmt.Scanf("%s\n" , &essid)
+//	fmt.Printf("Informe a segurança wi-fi \n")
+//	fmt.Println("[wpa wpa2]"
+//	fmt.Scanf("%s\n", &wifiSecurityType)
 
 
-	fmt.Printf("Informe o modo de Ip \n")
-	fmt.Scanf("%s\n", &ipMode)
+//	fmt.Printf("Informe a identificação da rede \n")
+//	fmt.Scanf("%s\n" , &essid)
 
 
-	fmt.Printf("Informe a senha da rede \n")
-	fmt.Scanf("%s\n", &wifiPassword)
+//	fmt.Printf("Informe o modo de Ip \n")
+//	fmt.Println("[ dhcp ]")
+//	fmt.Scanf("%s\n", &ipMode)
 
 
-	fmt.Printf("A rede está oculta? \n")
-	fmt.Scanf("%t\n", &hidden)
+//	fmt.Printf("Informe a senha da rede \n")
+//	fmt.Scanf("%s\n", &wifiPassword)
 
 
-	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
+//	fmt.Printf("A rede está oculta? \n")
+//	fmt.Println("[yes no]")
+//	fmt.Scanf("%t\n", &hidden)
+
+
+//	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
+
 //	execute("loadkeys br-abnt2")
-	connProfile.writeWifiConfigToFile(".", "teste.txt")
-	//netctl start wifiInterface  //substitui o wifi-menu
-	//timedatectl set-ntp true
-	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
-	//lsblk
-	fmt.Scanf("%s", &)
+//	connProfile.writeWifiConfigToFile(".", "teste.txt")
 
-	fmt.Println("Seu computador tem suporte a EFI?")
-	fmt.Scanf("%s",&)
 
-	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
-	fmt.Scanf("%s",&)
+//	netctl start wifiInterface  //substitui o wifi-menu
+//	timedatectl set-ntp true
+
+
+//	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
+//	fmt.Println(detectPartitionTable())
+//	fmt.Scanf("%s", &)
+
+//	fmt.Println("Seu computador tem suporte a EFI?")
+//	fmt.Scanf("%s",&)
+
+//	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
+//	fmt.Scanf("%s",&)
 	//createPartitionTable(wifiInterface)
 
 	//parted
 
-	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
-	fmt.Scanf("%s",&)
-	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esses tipos de dispositicos?")
-	fmt.Scanf("%s",&)
+//	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
+//	fmt.Scanf("%s",&)
+//	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para es tipo de disposivo?")
+//	fmt.Scanf("%s",&)
 	
-	fmt.Printf("Qual sistema de arquivos você deseja instalar")
+//	fmt.Printf("Qual sistema de arquivos você deseja instalar")
 
 	//mkfs
 
@@ -192,13 +195,13 @@ var hidden bool
 	//genfstab -U /mnt > /mnt/etc/fstab
 	//arch-chroot /mnt /bin/bash
 	//locale-gen
-	fmt.Println("Qual linguagem você deseja que o sistema possua?")
-	fmt.Scanf("%s",&)
+//	fmt.Println("Qual linguagem você deseja que o sistema possua?")
+//	fmt.Scanf("%s",&)
 
 	//configurar /etc/locale.conf LANG=pt_BR.???
 
-	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
-	fmt.Scanf("%s",&)
+//	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
+//	fmt.Scanf("%s",&)
 	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
 
 
