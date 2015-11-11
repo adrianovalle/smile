@@ -105,12 +105,18 @@ func detectNetwork() []string{
 	regex:=r.FindAllString(string(cmdOut), -1)
 	return regex
 }
+func detectPartitionTable() []string{
+
+
+
+}
+
 func createPartitionTable(device string){
 
-
-	fmt.Printf("%s",device)
-
-
+	cmdOut := execute("lsblk")
+	r,_ := regexp.Compile("[s][d][a-z])")
+	regex := r.FindAllString(string(cmdOut),-1)
+	return regex
 }
 
 func main() {
