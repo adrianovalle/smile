@@ -157,9 +157,26 @@ var hidden bool
 	connProfile.writeWifiConfigToFile(".", "teste.txt")
 	//netctl start wifiInterface  //substitui o wifi-menu
 	//timedatectl set-ntp true
+	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
 	//lsblk
+	fmt.Scanf("%s", &)
+
+	fmt.Println("Seu computador tem suporte a EFI?")
+	fmt.Scanf("%s",&)
+
+	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
+	fmt.Scanf("%s",&)
 	//createPartitionTable(wifiInterface)
+
 	//parted
+
+	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
+	fmt.Scanf("%s",&)
+	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esses tipos de dispositicos?")
+	fmt.Scanf("%s",&)
+	
+	fmt.Printf("Qual sistema de arquivos você deseja instalar")
+
 	//mkfs
 	//mkdir -p /mnt/boot
 	//mount ????
