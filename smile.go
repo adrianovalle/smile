@@ -129,28 +129,32 @@ var hidden bool
 	_=execute("clear")
 
 	fmt.Printf("Bom dia! Informe sua interface de rede \n")
-
 	fmt.Println(detectNetwork())
-	
 	fmt.Scanf("%s\n",&wifiInterface)
 
 	fmt.Printf("Informe o tipo de conexão \n")
 	fmt.Scanf("%s\n" ,&connectionType)
 
+
 	fmt.Printf("Informe a segurança wi-fi \n")
 	fmt.Scanf("%s\n", &wifiSecurityType)
+
 
 	fmt.Printf("Informe a identificação da rede \n")
 	fmt.Scanf("%s\n" , &essid)
 
+
 	fmt.Printf("Informe o modo de Ip \n")
 	fmt.Scanf("%s\n", &ipMode)
+
 
 	fmt.Printf("Informe a senha da rede \n")
 	fmt.Scanf("%s\n", &wifiPassword)
 
+
 	fmt.Printf("A rede está oculta? \n")
 	fmt.Scanf("%t\n", &hidden)
+
 
 	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
 //	execute("loadkeys br-abnt2")
@@ -178,16 +182,30 @@ var hidden bool
 	fmt.Printf("Qual sistema de arquivos você deseja instalar")
 
 	//mkfs
+
+
 	//mkdir -p /mnt/boot
 	//mount ????
+
+
 	//pacstrap -i /mnt base base-devel
 	//genfstab -U /mnt > /mnt/etc/fstab
 	//arch-chroot /mnt /bin/bash
 	//locale-gen
+	fmt.Println("Qual linguagem você deseja que o sistema possua?")
+	fmt.Scanf("%s",&)
+
 	//configurar /etc/locale.conf LANG=pt_BR.???
+
+	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
+	fmt.Scanf("%s",&)
 	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
+
+
 	//tzselect
 	//ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime
+
+
 	//hwclock --systohc --utc
 	//mkinitcpio -p linux
 	
