@@ -99,9 +99,6 @@ func detectNetwork() []string{
 	
 	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
 
-
-//	r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
-	
 	regex:=r.FindAllString(string(cmdOut), -1)
 	return regex
 }
@@ -157,14 +154,21 @@ var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword,
 	fmt.Println(connProfile)
 
 	fmt.Printf("%s",execute("clear"))
-	fmt.Println("Os dados informados foram: \n" +
-			"Interface de rede: " + connProfile.wifiInterface + "\n" +
-			"Tipo de Conexao: " + connProfile.connectionType  + "\n" +
-			"Seguranca da rede: "+ connProfile.wifiSecurityType +"\n" +
-			"Nome da Rede Wi-fi: "+ connProfile.essid + "\n" +
-			"Modo de aquisicao IP: "+ connProfile.ipMode + "\n" +
-			"Senha da Rede: " + connProfile.wifiPassword + "\n" +
-			"Rede Oculta: " + connProfile.hidden + "\n") 
+	fmt.Println("						Os dados informados foram: \n\n" +
+
+			"					Interface de rede: " + connProfile.wifiInterface + "\n\n" +
+
+			"					Tipo de Conexao: " + connProfile.connectionType  + "\n\n" +
+
+			"					Seguranca da rede: "+ connProfile.wifiSecurityType +"\n\n" +
+
+			"					Nome da Rede Wi-fi: "+ connProfile.essid + "\n\n" +
+
+			"					Modo de aquisicao IP: "+ connProfile.ipMode + "\n\n" +
+
+			"					Senha da Rede: " + connProfile.wifiPassword + "\n\n" +
+
+			"					Rede Oculta: " + connProfile.hidden + "\n") 
 	
 
 
@@ -183,6 +187,7 @@ var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword,
 //	fmt.Scanf("%s", &)
 
 //	fmt.Println("Seu computador tem suporte a EFI?")
+//	fmt.Prinln("[yes no]")
 //	fmt.Scanf("%s",&)
 
 //	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
@@ -195,10 +200,11 @@ var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword,
 //	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
 //	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
+
+
 //	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
 //	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
-	
 	//mkfs.f2fs
 
 	//mkdir -p /mnt/boot
@@ -208,6 +214,9 @@ var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword,
 	//genfstab -U /mnt > /mnt/etc/fstab
 	//arch-chroot /mnt /bin/bash
 	//locale-gen
+
+
+
 //	fmt.Println("Qual língua você deseja que o sistema possua?")
 //	fmt.Scanf("%s",&)
 
