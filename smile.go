@@ -127,7 +127,7 @@ func main() {
 //	fmt.Scanf("%s\n",&wifiInterface)
 
 //	fmt.Printf("Informe o tipo de conexão \n")
-//	fmt.Println("[wireless ou ethernet]") 
+//	fmt.Println("[wireless ethernet]") 
 //	fmt.Scanf("%s\n" ,&connectionType)
 	
 
@@ -172,35 +172,35 @@ func main() {
 //	fmt.Scanf("%s",&)
 
 //	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
+//	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 	//createPartitionTable(wifiInterface)
 
 	//parted
 
 //	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
+//	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
-//	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para es tipo de disposivo?")
+//	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
+	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 	
-//	fmt.Printf("Qual sistema de arquivos você deseja instalar")
-
-	//mkfs
-
+	//mkfs.f2fs
 
 	//mkdir -p /mnt/boot
 	//mount ????
-
 
 	//pacstrap -i /mnt base base-devel
 	//genfstab -U /mnt > /mnt/etc/fstab
 	//arch-chroot /mnt /bin/bash
 	//locale-gen
-//	fmt.Println("Qual linguagem você deseja que o sistema possua?")
+//	fmt.Println("Qual língua você deseja que o sistema possua?")
 //	fmt.Scanf("%s",&)
 
 	//configurar /etc/locale.conf LANG=pt_BR.???
 
 //	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
+	fmt.Println("[no]")
 //	fmt.Scanf("%s",&)
 	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
 
