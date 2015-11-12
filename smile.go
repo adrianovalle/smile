@@ -10,7 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
-	"strconv"
+//	"strconv"
 )
 
 const version ="0.3.0"
@@ -46,7 +46,7 @@ type ConnectionProfile struct{
 	essid		 string
 	ipMode		 string
 	wifiPassword	 string
-	hidden		 bool
+	hidden		 string 
 
 
 }
@@ -77,7 +77,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		     descWifiPass + connProfile.wifiPassword +"\n"+
 
-		     descHidden + strconv.FormatBool(connProfile.hidden))
+		     descHidden + connProfile.hidden)
 
 
 	err:=ioutil.WriteFile(destinationFolder + "/" + nameProfile,data,0777)
@@ -97,10 +97,10 @@ func detectNetwork() []string{
 
 	cmdOut:=execute("ip link")
 	
-//	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
+	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
 
 
-	r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
+//	r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
 	
 	regex:=r.FindAllString(string(cmdOut), -1)
 	return regex
@@ -114,47 +114,61 @@ func detectPartitionTable() []string{
 }
 
 func main() {
-//var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword string
-//var hidden bool
+var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword, hidden string
+
 
 
 	verbose=false
+	fmt.Printf("%s",execute("clear"))
 
-	_=execute("clear")
+	fmt.Printf("Bom dia! Informe sua interface de rede \n")
+	fmt.Println(detectNetwork())
+	fmt.Scanf("%s",&wifiInterface)
 
-//	fmt.Printf("Bom dia! Informe sua interface de rede \n")
-//	fmt.Println(detectNetwork())
-//	fmt.Scanf("%s\n",&wifiInterface)
-
-//	fmt.Printf("Informe o tipo de conexão \n")
-//	fmt.Println("[wireless ethernet]") 
-//	fmt.Scanf("%s\n" ,&connectionType)
+	fmt.Printf("Informe o tipo de conexão \n")
+	fmt.Println("[wireless ethernet]") 
+	fmt.Scanf("%s" ,&connectionType)
 	
 
-//	fmt.Printf("Informe a segurança wi-fi \n")
-//	fmt.Println("[wpa wpa2]"
-//	fmt.Scanf("%s\n", &wifiSecurityType)
+	fmt.Printf("Informe a segurança wi-fi \n")
+	fmt.Println("[wpa wpa2]")
+	fmt.Scanf("%s", &wifiSecurityType)
 
 
-//	fmt.Printf("Informe a identificação da rede \n")
-//	fmt.Scanf("%s\n" , &essid)
+	fmt.Printf("Informe a identificação da rede \n")
+	fmt.Scanf("%s" , &essid)
 
 
-//	fmt.Printf("Informe o modo de Ip \n")
-//	fmt.Println("[ dhcp ]")
-//	fmt.Scanf("%s\n", &ipMode)
+	fmt.Printf("Informe o modo de Ip \n")
+	fmt.Println("[ dhcp ]")
+	fmt.Scanf("%s", &ipMode)
 
 
-//	fmt.Printf("Informe a senha da rede \n")
-//	fmt.Scanf("%s\n", &wifiPassword)
+	fmt.Printf("Informe a senha da rede \n")
+	fmt.Scanf("%s", &wifiPassword)
 
 
-//	fmt.Printf("A rede está oculta? \n")
-//	fmt.Println("[yes no]")
-//	fmt.Scanf("%t\n", &hidden)
+	fmt.Printf("A rede está oculta? \n")
+	fmt.Println("[yes no]")
+	fmt.Scanf("%s", &hidden)
 
 
-//	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
+	connProfile := ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
+	fmt.Println(connProfile)
+
+	fmt.Printf("%s",execute("clear"))
+	fmt.Println("Os dados informados foram: \n" +
+			"Interface de rede: " + connProfile.wifiInterface + "\n" +
+			"Tipo de Conexao: " + connProfile.connectionType  + "\n" +
+			"Seguranca da rede: "+ connProfile.wifiSecurityType +"\n" +
+			"Nome da Rede Wi-fi: "+ connProfile.essid + "\n" +
+			"Modo de aquisicao IP: "+ connProfile.ipMode + "\n" +
+			"Senha da Rede: " + connProfile.wifiPassword + "\n" +
+			"Rede Oculta: " + connProfile.hidden + "\n") 
+	
+
+
+
 
 //	execute("loadkeys br-abnt2")
 //	connProfile.writeWifiConfigToFile(".", "teste.txt")
@@ -182,7 +196,7 @@ func main() {
 //	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 //	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
-	fmt.Println("[yes]")
+//	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 	
 	//mkfs.f2fs
@@ -200,7 +214,7 @@ func main() {
 	//configurar /etc/locale.conf LANG=pt_BR.???
 
 //	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
-	fmt.Println("[no]")
+//	fmt.Println("[no]")
 //	fmt.Scanf("%s",&)
 	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
 
