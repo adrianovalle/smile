@@ -110,6 +110,29 @@ func detectPartitionTable() []string{
 	return regex
 }
 
+
+func{
+	fmt.Printf("%s",execute("clear"))
+	fmt.Println("						Os dados informados foram: \n\n" +
+
+			"					Interface de rede: " + connProfile.wifiInterface + "\n\n" +
+
+			"					Tipo de Conexao: " + connProfile.connectionType  + "\n\n" +
+
+			"					Seguranca da rede: "+ connProfile.wifiSecurityType +"\n\n" +
+
+			"					Nome da Rede Wi-fi: "+ connProfile.essid + "\n\n" +
+
+			"					Modo de aquisicao IP: "+ connProfile.ipMode + "\n\n" +
+
+			"					Senha da Rede: " + connProfile.wifiPassword + "\n\n" +
+
+			"					Rede Oculta: " + connProfile.hidden + "\n") 
+	
+
+
+}
+
 func main() {
 var wifiInterface, connectionType, wifiSecurityType, essid,ipMode, wifiPassword, hidden string
 
