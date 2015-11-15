@@ -5,7 +5,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
+//	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -169,25 +169,39 @@ type Locale struct {
 	timezone       string
 }
 
-//func locale{
-//		fmt.Println("Qual língua você deseja que o sistema possua?")
-//		fmt.Println("[Brasil]")
-//		fmt.Scanf("%s",&country)
+//func (locale *Locale) writeLocale(){
 
-//	if  country=="Brasil" {
-//configurar /etc/locale.conf LANG=pt_BR.???
+//	if  language=="Português-Brasileiro"{
+//		data := []byte("LANG=pt_BR.ISO-8859-1")
+//		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
 //	}
-
-//	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração forapadrao")
-//	fmt.Println("[no]")
-//	fmt.Scanf("%s",&keyboardLayout)
 
 //	if keyBoardLayout == "no" {
 //		_=execute("loadkeys br-abnt2")
-//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
-//	}
+//		KEYMAP=br.abnt2  -- colocar no /etc/vconsole
 
+//	}
 //}
+
+func (locale *Locale) setLocale() *Locale {
+	var language, keyboardLayout, timezone string
+
+	fmt.Println("Qual língua você deseja que o sistema posa?")
+	fmt.Println("[Português-Brasileiro]")
+	fmt.Scanf("%s", &language)
+
+	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usa-la?")
+	fmt.Println("[br-abnt2]")
+	fmt.Scanf("%s", &keyboardLayout)
+
+	fmt.Println("Fuso horario")
+	fmt.Println("[Brasilia]")
+	fmt.Scanf("%s", &timezone)
+
+	*locale = Locale{language, keyboardLayout, timezone}
+
+	return locale
+}
 
 //func part{
 //	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
@@ -222,13 +236,14 @@ type Locale struct {
 
 func main() {
 	var connProfile ConnectionProfile
-	var efiSupport string
-	var country string
-	var keyboardLayout string
+//	var efiSupport string
+	var locale Locale
 
 	verbose = false
 
 	//teclado
+
+	locale = *locale.setLocale()
 
 	connProfile = *connProfile.setConnectionProfile()
 
