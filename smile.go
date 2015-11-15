@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-	//	"strconv"
 )
 
 const version = "0.4.0"
@@ -75,13 +74,6 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 		descHidden + connProfile.hidden)
 
 	err := ioutil.WriteFile(destinationFolder+"/"+connProfile.essid, data, 0777)
-	check(err)
-
-}
-func copyWifiConfigFileToDestination(originalFileWithPath string, destinyFileWithPath string) {
-
-	err := os.Rename(originalFileWithPath, destinyFileWithPath)
-
 	check(err)
 
 }
@@ -171,68 +163,81 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 	return connProfile
 }
 
+type Locale struct {
+	language       string
+	keyboardLayout string
+	timezone       string
+}
+
+//func locale{
+//		fmt.Println("Qual língua você deseja que o sistema possua?")
+//		fmt.Println("[Brasil]")
+//		fmt.Scanf("%s",&country)
+
+//	if  country=="Brasil" {
+//configurar /etc/locale.conf LANG=pt_BR.???
+//	}
+
+//	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração forapadrao")
+//	fmt.Println("[no]")
+//	fmt.Scanf("%s",&keyboardLayout)
+
+//	if keyBoardLayout == "no" {
+//		_=execute("loadkeys br-abnt2")
+//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
+//	}
+
+//}
+
+//func part{
+//	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
+//	fmt.Println(detectPartitionTable())
+//	fmt.Scanf("%s", &)
+
+//	fmt.Println("Seu computador tem suporte a EFI?")
+//	fmt.Prinln("[yes no]")
+//	fmt.Scanf("%s",&efiSupport)
+
+//if efiSupport == "no" {
+
+//}
+
+//	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
+//	fmt.Println("[yes]")
+//	fmt.Scanf("%s",&)
+//createPartitionTable()
+
+//parted
+
+//	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
+//	fmt.Println("[yes]")
+//	fmt.Scanf("%s",&)
+
+//	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
+//	fmt.Println("[yes]")
+//	fmt.Scanf("%s",&)
+//mkfs.f2fs
+
+//}
+
 func main() {
 	var connProfile ConnectionProfile
 	var efiSupport string
+	var country string
+	var keyboardLayout string
 
 	verbose = false
 
-	execute("loadkeys br-abnt2")
-
-
-		//	fmt.Println("Qual língua você deseja que o sistema possua?")
-	//	fmt.Scanf("%s",&)
-
-
-	//	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
-	//	fmt.Println("[no]")
-	//	fmt.Scanf("%s",&)
-
-	
-	
-	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
-
-	//configurar /etc/locale.conf LANG=pt_BR.???
-
+	//teclado
 
 	connProfile = *connProfile.setConnectionProfile()
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-
 	//	netctl start connProfile.essid //substitui o wifi-menu
 	//	timedatectl set-ntp true
 
-	//	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
-	//	fmt.Println(detectPartitionTable())
-	//	fmt.Scanf("%s", &)
-
-	//	fmt.Println("Seu computador tem suporte a EFI?")
-	//	fmt.Prinln("[yes no]")
-	//	fmt.Scanf("%s",&efiSupport)
-
-	if efiSupport == "no" {
-
-
-	}
-
-
-
-	//	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
-	//	fmt.Println("[yes]")
-	//	fmt.Scanf("%s",&)
-	//createPartitionTable()
-
-	//parted
-
-	//	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
-	//	fmt.Println("[yes]")
-	//	fmt.Scanf("%s",&)
-
-	//	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
-	//	fmt.Println("[yes]")
-	//	fmt.Scanf("%s",&)
-	//mkfs.f2fs
+	//particionamento
 
 	//mkdir -p /mnt/boot
 	//mount ????
