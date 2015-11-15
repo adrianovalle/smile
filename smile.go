@@ -12,7 +12,7 @@ import (
 	//	"strconv"
 )
 
-const version = "0.3.0"
+const version = "0.4.0"
 
 var verbose bool
 
@@ -124,7 +124,7 @@ func (connProfile *ConnectionProfile) printConnectionProfile() {
 
 func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile {
 	var wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden, wifiProfileValidation string
-	
+
 	for {
 		fmt.Printf("%s", execute("clear"))
 
@@ -144,7 +144,7 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Scanf("%s", &essid)
 
 		fmt.Printf("Informe o modo de Ip \n")
-		fmt.Println("[ dhcp ]")
+		fmt.Println("[dhcp]")
 		fmt.Scanf("%s", &ipMode)
 
 		fmt.Printf("Informe a senha da rede \n")
@@ -153,7 +153,7 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Printf("A rede está oculta? \n")
 		fmt.Println("[yes no]")
 		fmt.Scanf("%s", &hidden)
-			
+
 		*connProfile = ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
 
 		connProfile.printConnectionProfile()
@@ -173,16 +173,34 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 
 func main() {
 	var connProfile ConnectionProfile
+	var efiSupport string
 
 	verbose = false
 
 	execute("loadkeys br-abnt2")
 
+
+		//	fmt.Println("Qual língua você deseja que o sistema possua?")
+	//	fmt.Scanf("%s",&)
+
+
+	//	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
+	//	fmt.Println("[no]")
+	//	fmt.Scanf("%s",&)
+
+	
+	
+	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
+
+	//configurar /etc/locale.conf LANG=pt_BR.???
+
+
 	connProfile = *connProfile.setConnectionProfile()
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	//	netctl start wifiInterface  //substitui o wifi-menu
+
+	//	netctl start connProfile.essid //substitui o wifi-menu
 	//	timedatectl set-ntp true
 
 	//	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
@@ -191,12 +209,19 @@ func main() {
 
 	//	fmt.Println("Seu computador tem suporte a EFI?")
 	//	fmt.Prinln("[yes no]")
-	//	fmt.Scanf("%s",&)
+	//	fmt.Scanf("%s",&efiSupport)
+
+	if efiSupport == "no" {
+
+
+	}
+
+
 
 	//	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
 	//	fmt.Println("[yes]")
 	//	fmt.Scanf("%s",&)
-	//createPartitionTable(wifiInterface)
+	//createPartitionTable()
 
 	//parted
 
@@ -215,17 +240,6 @@ func main() {
 	//pacstrap -i /mnt base base-devel
 	//genfstab -U /mnt > /mnt/etc/fstab
 	//arch-chroot /mnt /bin/bash
-	//locale-gen
-
-	//	fmt.Println("Qual língua você deseja que o sistema possua?")
-	//	fmt.Scanf("%s",&)
-
-	//configurar /etc/locale.conf LANG=pt_BR.???
-
-	//	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja informar alguma configuração fora do padrão?")
-	//	fmt.Println("[no]")
-	//	fmt.Scanf("%s",&)
-	//KEYMAP=br.abnt2  -- colocar no /etc/vconsole
 
 	//tzselect
 	//ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime
