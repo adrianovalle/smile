@@ -169,19 +169,22 @@ type Locale struct {
 	timezone       string
 }
 
-//func (locale *Locale) writeLocale(){
+func (locale *Locale) writeLocale(){
 
-//	if  language=="Português-Brasileiro"{
-//		data := []byte("LANG=pt_BR.ISO-8859-1")
-//		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
-//	}
+	if locale.language=="Português-Brasileiro"{
+		data := []byte("LANG=pt_BR.ISO-8859-1")
+		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
+	}
 
-//	if keyBoardLayout == "no" {
-//		_=execute("loadkeys br-abnt2")
-//		KEYMAP=br.abnt2  -- colocar no /etc/vconsole
-
-//	}
-//}
+	iflocale.keyBoardLayout == "no" {
+		_=execute("loadkeys br-abnt2")
+		KEYMAP=br.abnt2  -- colocar no /etc/vconsole
+	}
+	
+	if locale.timezone == "Brasilia" {
+		
+	}
+}
 
 func (locale *Locale) setLocale() *Locale {
 	var language, keyboardLayout, timezone string
