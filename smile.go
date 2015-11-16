@@ -206,18 +206,24 @@ func (locale *Locale) setLocale() *Locale {
 	return locale
 }
 
-//func part{
-//	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
-//	fmt.Println(detectPartitionTable())
-//	fmt.Scanf("%s", &)
+type Partition{
+	filesystem string
+	device string
+}
 
-//	fmt.Println("Seu computador tem suporte a EFI?")
-//	fmt.Prinln("[yes no]")
-//	fmt.Scanf("%s",&efiSupport)
 
-//if efiSupport == "no" {
+func (partition *Partition) setPartition{
+	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
+	fmt.Println(detectPartitionTable())
+	fmt.Scanf("%s", &)
 
-//}
+	fmt.Println("Seu computador tem suporte a EFI?")
+	fmt.Prinln("[yes no]")
+	fmt.Scanf("%s",&efiSupport)
+
+if efiSupport == "no" {
+
+}
 
 //	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
 //	fmt.Println("[yes]")
