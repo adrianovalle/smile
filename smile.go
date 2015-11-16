@@ -120,7 +120,7 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 	for {
 		fmt.Printf("%s", execute("clear"))
 
-		fmt.Printf("Bom dia! Informe sua interface de rede \n")
+		fmt.Printf("Informe sua interface de rede \n")
 		fmt.Println(detectNetwork())
 		fmt.Scanf("%s", &wifiInterface)
 
@@ -177,12 +177,15 @@ func (locale *Locale) writeLocale(){
 	}
 
 	iflocale.keyBoardLayout == "no" {
+		setfont
 		_=execute("loadkeys br-abnt2")
 		KEYMAP=br.abnt2  -- colocar no /etc/vconsole
 	}
 	
 	if locale.timezone == "Brasilia" {
-		
+	timedatectl set-ntp true
+	ln -s /usr/share/zoneinfo/Zone/SubZone /etc/localtime
+
 	}
 }
 
@@ -206,6 +209,13 @@ func (locale *Locale) setLocale() *Locale {
 	return locale
 }
 
+func (locale *Locale) printLocale () {
+
+	fmt.Println("Os dados selecionados foram:"+
+		"Lingua :" + locale.language
+
+
+}
 type Partition{
 	filesystem string
 	device string
