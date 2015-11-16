@@ -5,7 +5,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-//	"os"
+	//	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -124,11 +124,11 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Println(detectNetwork())
 		fmt.Scanf("%s", &wifiInterface)
 
-		fmt.Printf("Informe o tipo de conexão \n")
+		fmt.Printf("Informe o tipo de conexao \n")
 		fmt.Println("[wireless ethernet]")
 		fmt.Scanf("%s", &connectionType)
 
-		fmt.Printf("Informe a segurança wi-fi \n")
+		fmt.Printf("Informe a seguranca wi-fi \n")
 		fmt.Println("[wpa wpa2]")
 		fmt.Scanf("%s", &wifiSecurityType)
 
@@ -169,22 +169,26 @@ type Locale struct {
 	timezone       string
 }
 
-func (locale *Locale) writeLocale(){
+func (locale *Locale) writeLocale() {
 
-	if locale.language=="Português-Brasileiro"{
+	if locale.language == "Português-Brasileiro" {
 		data := []byte("LANG=pt_BR.ISO-8859-1")
 		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
 	}
 
-	iflocale.keyBoardLayout == "no" {
-		setfont
-		_=execute("loadkeys br-abnt2")
-		KEYMAP=br.abnt2  -- colocar no /etc/vconsole
+	if locale.keyBoardLayout == "[br-abnt2]" {
+
+		_ = execute("loadkeys br-abnt2")
+
+		data := []byte("KEYMAP=br.abnt2" + "\n" +
+			"FONT=lat1-16.psfu.gz")
+
+		err := ioutil.WriteFile("/etc/vconsole.conf", data, 0777)
 	}
-	
+
 	if locale.timezone == "Brasilia" {
-	timedatectl set-ntp true
-	ln -s /usr/share/zoneinfo/Zone/SubZone /etc/localtime
+		_ = execute("timedatectl set-ntp true")
+		_ = execute("ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime")
 
 	}
 }
@@ -209,31 +213,32 @@ func (locale *Locale) setLocale() *Locale {
 	return locale
 }
 
-func (locale *Locale) printLocale () {
+func (locale *Locale) printLocale() {
 
-	fmt.Println("Os dados selecionados foram:"+
-		"Lingua :" + locale.language
-
-
-}
-type Partition{
-	filesystem string
-	device string
-}
-
-
-func (partition *Partition) setPartition{
-	fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
-	fmt.Println(detectPartitionTable())
-	fmt.Scanf("%s", &)
-
-	fmt.Println("Seu computador tem suporte a EFI?")
-	fmt.Prinln("[yes no]")
-	fmt.Scanf("%s",&efiSupport)
-
-if efiSupport == "no" {
+	fmt.Println("Os dados selecionados foram:" +
+		"Lingua : " + locale.language + "\n" +
+		"Padrao de teclado : " + locale.keyboardLayout + "\n" +
+		"Fuso horario : " + locale.timezone)
 
 }
+
+//type Partition struct{
+//	filesystem string
+//	device string
+//}
+
+//func (partition *Partition) setPartition(){
+//	fmt.Println("Informe em qual dispositivo voce deseja criar o particionamento")
+//	fmt.Println(detectPartitionTable())
+//	fmt.Scanf("%s", &)
+
+//	fmt.Println("Seu computador tem suporte a EFI?")
+//	fmt.Prinln("[yes no]")
+//	fmt.Scanf("%s",&efiSupport)
+
+//if efiSupport == "no" {
+
+//}
 
 //	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
 //	fmt.Println("[yes]")
@@ -255,7 +260,7 @@ if efiSupport == "no" {
 
 func main() {
 	var connProfile ConnectionProfile
-//	var efiSupport string
+	//	var efiSupport string
 	var locale Locale
 
 	verbose = false
