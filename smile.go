@@ -238,19 +238,53 @@ func (locale *Locale) printLocale() {
 
 }
 
-//type Partition struct{
-//	filesystem string
-//	device string
-//}
+type Partition struct {
+	device     string
+	filesystem string
+	efiSupport string
+}
 
-//func (partition *Partition) setPartition(){
-//	fmt.Println("Informe em qual dispositivo voce deseja criar o particionamento")
-//	fmt.Println(detectPartitionTable())
-//	fmt.Scanf("%s", &)
+func (partition *Partition) setPartition() {
+	var filesystem, efiSupport, partitionValidation string
 
-//	fmt.Println("Seu computador tem suporte a EFI?")
-//	fmt.Prinln("[yes no]")
-//	fmt.Scanf("%s",&efiSupport)
+	for {
+		fmt.Println("Informe em qual dispositivo voce deseja criar o particionamento")
+		fmt.Println(detectPartitionTable())
+		fmt.Scanf("%s", &filesystem)
+
+		fmt.Println("Seu computador tem suporte a EFI?")
+		fmt.Prinln("[yes no]")
+		fmt.Scanf("%s", &efiSupport)
+
+		*partition = Partition{device, filesystem, efiSupport}
+
+		
+
+
+		fmt.Println ("Os dados est√o corretos?")
+		fmt.Scanf("%s",partitionValidation)
+
+		if partitionValidation == "yes" {
+			break
+		}
+
+	}
+
+}
+
+func (partition *Partition) printPartition() {
+
+		fmt.Println("Parti√√o selecionada: " + partition.device + "/n" +
+			    "Sistema de arquivos:
+
+
+}
+
+
+
+
+
+
 
 //if efiSupport == "no" {
 
@@ -287,6 +321,7 @@ func main() {
 
 	locale.writeLocale()
 
+	//conex√£o de rede
 	connProfile = *connProfile.setConnectionProfile()
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
