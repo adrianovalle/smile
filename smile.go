@@ -174,9 +174,10 @@ func (locale *Locale) writeLocale() {
 	if locale.language == "Português-Brasileiro" {
 		data := []byte("LANG=pt_BR.ISO-8859-1")
 		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
+		check(err)
 	}
 
-	if locale.keyBoardLayout == "[br-abnt2]" {
+	if locale.keyboardLayout == "[br-abnt2]" {
 
 		_ = execute("loadkeys br-abnt2")
 
@@ -184,31 +185,46 @@ func (locale *Locale) writeLocale() {
 			"FONT=lat1-16.psfu.gz")
 
 		err := ioutil.WriteFile("/etc/vconsole.conf", data, 0777)
+		check(err)
 	}
 
 	if locale.timezone == "Brasilia" {
 		_ = execute("timedatectl set-ntp true")
-		_ = execute("ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime")
+		_ = execute("ln -s -f /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime")
 
 	}
 }
 
 func (locale *Locale) setLocale() *Locale {
-	var language, keyboardLayout, timezone string
+	var language, keyboardLayout, timezone, localeValidation string
 
-	fmt.Println("Qual língua você deseja que o sistema posa?")
-	fmt.Println("[Português-Brasileiro]")
-	fmt.Scanf("%s", &language)
+	for {
 
-	fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usa-la?")
-	fmt.Println("[br-abnt2]")
-	fmt.Scanf("%s", &keyboardLayout)
+		fmt.Println("Qual língua você deseja que o sistema posa?")
+		fmt.Println("[Português-Brasileiro]")
+		fmt.Scanf("%s", &language)
 
-	fmt.Println("Fuso horario")
-	fmt.Println("[Brasilia]")
-	fmt.Scanf("%s", &timezone)
+		fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usa-la?")
+		fmt.Println("[br-abnt2]")
+		fmt.Scanf("%s", &keyboardLayout)
 
-	*locale = Locale{language, keyboardLayout, timezone}
+		fmt.Println("Fuso horario")
+		fmt.Println("[Brasilia]")
+		fmt.Scanf("%s", &timezone)
+
+		*locale = Locale{language, keyboardLayout, timezone}
+
+		locale.printLocale()
+
+		fmt.Println("Os dados estao corretos?")
+		fmt.Println("[yes no]")
+		fmt.Scanf("%s", &localeValidation)
+
+		if localeValidation == "yes" {
+			break
+		}
+
+	}
 
 	return locale
 }
@@ -269,12 +285,13 @@ func main() {
 
 	locale = *locale.setLocale()
 
+	locale.writeLocale()
+
 	connProfile = *connProfile.setConnectionProfile()
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	//	netctl start connProfile.essid //substitui o wifi-menu
-	//	timedatectl set-ntp true
+	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
