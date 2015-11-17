@@ -289,7 +289,7 @@ func (partition *Partition) printPartition() {
 
 		fmt.Println("Partição selecionada: " + partition.device + "/n" +
 			    "Sistema de arquivos:: " + partition.filesystem + "/n" +
-			    "UEFI : " + partition.efiSupport)
+			    "UEFI suportado : " + partition.efiSupport)
 
 
 }
@@ -297,34 +297,14 @@ func (partition *Partition) printPartition() {
 
 
 
+func (partition *Partition) writePartitionTable{
+ 
 
 
-
-//if efiSupport == "no" {
-
-//}
-
-//	fmt.Println("VocÃª deseja utilizar todo o espaÃ§o da partiÃ§Ã£o para o sistema?")
-//	fmt.Println("[yes]")
-//	fmt.Scanf("%s",&)
-//createPartitionTable()
-
-//parted
-
-//	fmt.Println("O sistema serÃ¡ instalado em um pendrive ou ssd?")
-//	fmt.Println("[yes]")
-//	fmt.Scanf("%s",&)
-
-//	fmt.Println("VocÃª deseja instalar entÃ£o o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
-//	fmt.Println("[yes]")
-//	fmt.Scanf("%s",&)
-//mkfs.f2fs
-
-//}
+}
 
 func main() {
 	var connProfile ConnectionProfile
-	//	var efiSupport string
 	var locale Locale
 
 	verbose = false
@@ -335,7 +315,7 @@ func main() {
 
 	locale.writeLocale()
 
-	//conexÃ£o de rede
+	//conexão de rede
 	connProfile = *connProfile.setConnectionProfile()
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
