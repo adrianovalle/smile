@@ -5,7 +5,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	//	"os"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -100,13 +100,13 @@ func (connProfile *ConnectionProfile) printConnectionProfile() {
 
 		"\t\t\t\t\tInterface de rede: " + connProfile.wifiInterface + "\n\n" +
 
-		"\t\t\t\t\tTipo de Conexao: " + connProfile.connectionType + "\n\n" +
+		"\t\t\t\t\tTipo de Conexão: " + connProfile.connectionType + "\n\n" +
 
 		"\t\t\t\t\tSeguranca da rede: " + connProfile.wifiSecurityType + "\n\n" +
 
 		"\t\t\t\t\tNome da Rede Wi-fi: " + connProfile.essid + "\n\n" +
 
-		"\t\t\t\t\tModo de aquisicao IP: " + connProfile.ipMode + "\n\n" +
+		"\t\t\t\t\tModo de aquisição IP: " + connProfile.ipMode + "\n\n" +
 
 		"\t\t\t\t\tSenha da Rede: " + connProfile.wifiPassword + "\n\n" +
 
@@ -124,20 +124,20 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Println(detectNetwork())
 		fmt.Scanf("%s", &wifiInterface)
 
-		fmt.Printf("Informe o tipo de conexao \n")
+		fmt.Printf("Informe o tipo de conexão \n")
 		fmt.Println("[wireless ethernet]")
 		fmt.Scanf("%s", &connectionType)
 
-		fmt.Printf("Informe a seguranca wi-fi \n")
+		fmt.Printf("Informe o tipo de segurança wi-fi \n")
 		fmt.Println("[wpa wpa2]")
 		fmt.Scanf("%s", &wifiSecurityType)
 
-		fmt.Printf("Informe a identificação da rede \n")
-		fmt.Scanf("%s", &essid)
-
-		fmt.Printf("Informe o modo de Ip \n")
+		fmt.Printf("Informe o modo de aquisição de endereço Ip \n")
 		fmt.Println("[dhcp]")
 		fmt.Scanf("%s", &ipMode)
+
+		fmt.Printf("Informe a identificação da rede \n")
+		fmt.Scanf("%s", &essid)
 
 		fmt.Printf("Informe a senha da rede \n")
 		fmt.Scanf("%s", &wifiPassword)
@@ -172,7 +172,7 @@ type Locale struct {
 func (locale *Locale) writeLocale() {
 
 	if locale.language == "Português-Brasileiro" {
-		data := []byte("LANG=pt_BR.ISO-8859-1")
+		data := []byte("LANG=pt_BR.UTF-8")
 		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
 		check(err)
 	}
@@ -188,7 +188,7 @@ func (locale *Locale) writeLocale() {
 		check(err)
 	}
 
-	if locale.timezone == "Brasilia" {
+	if locale.timezone == "Brasília" {
 		_ = execute("timedatectl set-ntp true")
 		_ = execute("ln -s -f /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime")
 
@@ -200,15 +200,15 @@ func (locale *Locale) setLocale() *Locale {
 
 	for {
 
-		fmt.Println("Qual língua você deseja que o sistema posa?")
+		fmt.Println("Qual língua você deseja que o sistema possua?")
 		fmt.Println("[Português-Brasileiro]")
 		fmt.Scanf("%s", &language)
 
-		fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usa-la?")
+		fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usá-la?")
 		fmt.Println("[br-abnt2]")
 		fmt.Scanf("%s", &keyboardLayout)
 
-		fmt.Println("Fuso horario")
+		fmt.Println("Fuso horário")
 		fmt.Println("[Brasilia]")
 		fmt.Scanf("%s", &timezone)
 
@@ -216,7 +216,7 @@ func (locale *Locale) setLocale() *Locale {
 
 		locale.printLocale()
 
-		fmt.Println("Os dados estao corretos?")
+		fmt.Println("Os dados estão corretos?")
 		fmt.Println("[yes no]")
 		fmt.Scanf("%s", &localeValidation)
 
@@ -232,9 +232,9 @@ func (locale *Locale) setLocale() *Locale {
 func (locale *Locale) printLocale() {
 
 	fmt.Println("Os dados selecionados foram:" +
-		"Lingua : " + locale.language + "\n" +
-		"Padrao de teclado : " + locale.keyboardLayout + "\n" +
-		"Fuso horario : " + locale.timezone)
+		"Língua : " + locale.language + "\n" +
+		"Padrão de teclado : " + locale.keyboardLayout + "\n" +
+		"Fuso horário : " + locale.timezone)
 
 }
 
@@ -245,38 +245,51 @@ type Partition struct {
 }
 
 func (partition *Partition) setPartition() {
-	var filesystem, efiSupport, partitionValidation string
+	var device, filesystem, efiSupport, partitionValidation, overwriteAccept string
 
 	for {
-		fmt.Println("Informe em qual dispositivo voce deseja criar o particionamento")
+		fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
 		fmt.Println(detectPartitionTable())
-		fmt.Scanf("%s", &filesystem)
+		fmt.Scanf("%s", &device)
+
+		fmt.Println("Informe o sistema de arquivos desejado")
+		fmt.Println("[f2fs]")
+		fmt.Scanf("%s",filesystem)
 
 		fmt.Println("Seu computador tem suporte a EFI?")
-		fmt.Prinln("[yes no]")
+		fmt.Println("[yes no]")
 		fmt.Scanf("%s", &efiSupport)
 
 		*partition = Partition{device, filesystem, efiSupport}
 
-		
+		partition.printPartition()
 
-
-		fmt.Println ("Os dados est�o corretos?")
+		fmt.Println ("Os dados estão corretos?")
 		fmt.Scanf("%s",partitionValidation)
 
-		if partitionValidation == "yes" {
-			break
-		}
 
+		fmt.Println("Todos os dados serão apagados da unidade selecionada. Deseja continuar?")
+		fmt.Println("[yes no]")
+		fmt.Scanf("%s", &overwriteAccept)
+
+
+		if partitionValidation == "yes" {
+			if overwriteAccept == "yes"{
+				break
+			}else{
+				os.Exit(0)
+			}
+		}
+		
 	}
 
 }
 
 func (partition *Partition) printPartition() {
 
-		fmt.Println("Parti��o selecionada: " + partition.device + "/n" +
-			    "Sistema de arquivos:: " + partition.filesystem + "/n"" +
-			    UEFI : " + partition.efiSupport)
+		fmt.Println("Partição selecionada: " + partition.device + "/n" +
+			    "Sistema de arquivos:: " + partition.filesystem + "/n" +
+			    "UEFI : " + partition.efiSupport)
 
 
 }
@@ -291,18 +304,18 @@ func (partition *Partition) printPartition() {
 
 //}
 
-//	fmt.Println("Você deseja utilizar todo o espaço da partição para o sistema?")
+//	fmt.Println("VocÃª deseja utilizar todo o espaÃ§o da partiÃ§Ã£o para o sistema?")
 //	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 //createPartitionTable()
 
 //parted
 
-//	fmt.Println("O sistema será instalado em um pendrive ou ssd?")
+//	fmt.Println("O sistema serÃ¡ instalado em um pendrive ou ssd?")
 //	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 
-//	fmt.Println("Você deseja instalar então o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
+//	fmt.Println("VocÃª deseja instalar entÃ£o o sistema de arquivos f2fs, que permite um melhor aproveitamento para esse tipo de disposivo?")
 //	fmt.Println("[yes]")
 //	fmt.Scanf("%s",&)
 //mkfs.f2fs
@@ -322,7 +335,7 @@ func main() {
 
 	locale.writeLocale()
 
-	//conexão de rede
+	//conexÃ£o de rede
 	connProfile = *connProfile.setConnectionProfile()
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
