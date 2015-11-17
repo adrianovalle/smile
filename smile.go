@@ -275,7 +275,8 @@ func (partition *Partition) setPartition() {
 func (partition *Partition) printPartition() {
 
 		fmt.Println("Parti√√o selecionada: " + partition.device + "/n" +
-			    "Sistema de arquivos:
+			    "Sistema de arquivos:: " + partition.filesystem + "/n"" +
+			    UEFI : " + partition.efiSupport)
 
 
 }
