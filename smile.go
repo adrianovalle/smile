@@ -241,7 +241,7 @@ func (locale *Locale) printLocale() {
 type Partition struct {
 	device     string
 	filesystem string
-	efiSupport string
+	partitionTable string
 }
 
 func (partition *Partition) setPartition() {
@@ -274,13 +274,12 @@ func (partition *Partition) setPartition() {
 
 
 		if partitionValidation == "yes" {
-			if overwriteAccept == "yes"{
-				break
-			}else{
+			if overwriteAccept == "no"{
+				fmt.Println("Você cancelou a instalação")
 				os.Exit(0)
 			}
+			return partition
 		}
-		
 	}
 
 }
@@ -289,7 +288,7 @@ func (partition *Partition) printPartition() {
 
 		fmt.Println("Partição selecionada: " + partition.device + "/n" +
 			    "Sistema de arquivos:: " + partition.filesystem + "/n" +
-			    "UEFI suportado : " + partition.efiSupport)
+			    "Tabela de partição : " + partition.partitionTable)
 
 
 }
@@ -297,8 +296,22 @@ func (partition *Partition) printPartition() {
 
 
 
-func (partition *Partition) writePartitionTable{
- 
+func (partition *Partition) writePartitionTable(uefiEnabled string){
+
+	if uefiEnabled=="yes"{
+
+
+
+		break
+	}
+
+
+
+
+
+
+
+
 
 
 }
@@ -306,6 +319,7 @@ func (partition *Partition) writePartitionTable{
 func main() {
 	var connProfile ConnectionProfile
 	var locale Locale
+	var partition Partition
 
 	verbose = false
 
@@ -323,6 +337,8 @@ func main() {
 	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
+
+	partition = *partition.setProfile()
 
 	//mkdir -p /mnt/boot
 	//mount ????
