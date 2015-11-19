@@ -19,8 +19,17 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
-}
+} 
+func checkBool(text string)bool{
+var condition(bool)
 
+	if condition == "sim" {
+		condition =true
+	}
+
+	return condition
+
+}
 func execute(cmd string) []byte {
 
 	cmdLine := strings.Fields(cmd)
@@ -115,7 +124,8 @@ func (connProfile *ConnectionProfile) printConnectionProfile() {
 }
 
 func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile {
-	var wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden, wifiProfileValidation string
+	var wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, wifiProfileValidation string
+var hidden bool
 
 	for {
 		fmt.Printf("%s", execute("clear"))
@@ -143,18 +153,18 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Scanf("%s", &wifiPassword)
 
 		fmt.Printf("A rede está oculta? \n")
-		fmt.Println("[yes no]")
+		fmt.Println("[sim no]")
 		fmt.Scanf("%s", &hidden)
 
-		*connProfile = ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden}
+		*connProfile = ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword,checkBool(hidden)}
 
 		connProfile.printConnectionProfile()
 
 		fmt.Println("Os dados estao corretos?")
-		fmt.Println("[yes no]")
+		fmt.Println("[sim no]")
 		fmt.Scanf("%s", &wifiProfileValidation)
 
-		if wifiProfileValidation == "yes" {
+		if checkBool(wifiProfileValidation)== true {
 			break
 		}
 
@@ -217,10 +227,10 @@ func (locale *Locale) setLocale() *Locale {
 		locale.printLocale()
 
 		fmt.Println("Os dados estão corretos?")
-		fmt.Println("[yes no]")
+		fmt.Println("[sim no]")
 		fmt.Scanf("%s", &localeValidation)
 
-		if localeValidation == "yes" {
+		if localeValidation == "sim" {
 			break
 		}
 
@@ -256,9 +266,6 @@ func (partition *Partition) setPartition() {
 		fmt.Println("[f2fs]")
 		fmt.Scanf("%s",filesystem)
 
-		fmt.Println("Seu computador tem suporte a EFI?")
-		fmt.Println("[yes no]")
-		fmt.Scanf("%s", &efiSupport)
 
 		*partition = Partition{device, filesystem, partitionTable}
 
@@ -269,11 +276,11 @@ func (partition *Partition) setPartition() {
 
 
 		fmt.Println("Todos os dados serão apagados da unidade selecionada. Deseja continuar?")
-		fmt.Println("[yes no]")
+		fmt.Println("[sim no]")
 		fmt.Scanf("%s", &overwriteAccept)
 
 
-		if partitionValidation == "yes" {
+		if partitionValidation == "sim" {
 			if overwriteAccept == "no"{
 				fmt.Println("Você cancelou a instalação")
 				os.Exit(0)
@@ -293,27 +300,26 @@ func (partition *Partition) printPartition() {
 
 }
 
+func setUefi() bool{
 
+		fmt.Println("Seu computador tem suporte a EFI?")
+		fmt.Println("[sim no]")
+		fmt.Scanf("%b", &efiSupport)
+
+		return efisupport
+
+}
 
 
 func (partition *Partition) writePartitionTable(uefiEnabled string){
 
-	if uefiEnabled=="yes"{
+	if uefiEnabled=="sim"{
 
 		_ = execute("parted mklabel gpt P1 fat 1 500")
 		_ = execute("parted mklabel gpt P1 f2fs 501 5000")	
 
 		break
 	}
-
-
-
-
-
-
-
-
-
 
 }
 
