@@ -260,7 +260,7 @@ func (partition *Partition) setPartition() {
 		fmt.Println("[yes no]")
 		fmt.Scanf("%s", &efiSupport)
 
-		*partition = Partition{device, filesystem, efiSupport}
+		*partition = Partition{device, filesystem, partitionTable}
 
 		partition.printPartition()
 
@@ -300,7 +300,8 @@ func (partition *Partition) writePartitionTable(uefiEnabled string){
 
 	if uefiEnabled=="yes"{
 
-
+		_ = execute("parted mklabel gpt P1 fat 1 500")
+		_ = execute("parted mklabel gpt P1 f2fs 501 5000")	
 
 		break
 	}
