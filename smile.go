@@ -21,9 +21,9 @@ func check(e error) {
 	}
 } 
 func checkBool(text string)bool{
-var condition(bool)
+var condition bool
 
-	if condition == "sim" {
+	if text == "sim" {
 		condition =true
 	}
 
@@ -52,7 +52,7 @@ type ConnectionProfile struct {
 	essid            string
 	ipMode           string
 	wifiPassword     string
-	hidden           string
+	hidden           bool
 }
 
 func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder string) {
@@ -153,7 +153,7 @@ var hidden bool
 		fmt.Scanf("%s", &wifiPassword)
 
 		fmt.Printf("A rede está oculta? \n")
-		fmt.Println("[sim no]")
+		fmt.Println("[sim não]")
 		fmt.Scanf("%s", &hidden)
 
 		*connProfile = ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword,checkBool(hidden)}
@@ -161,7 +161,7 @@ var hidden bool
 		connProfile.printConnectionProfile()
 
 		fmt.Println("Os dados estao corretos?")
-		fmt.Println("[sim no]")
+		fmt.Println("[sim não]")
 		fmt.Scanf("%s", &wifiProfileValidation)
 
 		if checkBool(wifiProfileValidation)== true {
@@ -227,7 +227,7 @@ func (locale *Locale) setLocale() *Locale {
 		locale.printLocale()
 
 		fmt.Println("Os dados estão corretos?")
-		fmt.Println("[sim no]")
+		fmt.Println("[sim não]")
 		fmt.Scanf("%s", &localeValidation)
 
 		if localeValidation == "sim" {
@@ -254,8 +254,8 @@ type Partition struct {
 	partitionTable string
 }
 
-func (partition *Partition) setPartition() {
-	var device, filesystem, efiSupport, partitionValidation, overwriteAccept string
+func (partition *Partition) setPartition() *Partition{
+	var device, filesystem, efiSupport, partitionTable, partitionValidation, overwriteAccept string
 
 	for {
 		fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
@@ -266,8 +266,13 @@ func (partition *Partition) setPartition() {
 		fmt.Println("[f2fs]")
 		fmt.Scanf("%s",filesystem)
 
+		fmt.Println("Informe a tabela de partição")
+		fmt.Println("[msdos gpt]")
 
-		*partition = Partition{device, filesystem, partitionTable}
+
+
+
+		*partition = Partition {device, filesystem, partitionTable}
 
 		partition.printPartition()
 
@@ -276,12 +281,12 @@ func (partition *Partition) setPartition() {
 
 
 		fmt.Println("Todos os dados serão apagados da unidade selecionada. Deseja continuar?")
-		fmt.Println("[sim no]")
+		fmt.Println("[sim não]")
 		fmt.Scanf("%s", &overwriteAccept)
 
 
 		if partitionValidation == "sim" {
-			if overwriteAccept == "no"{
+			if overwriteAccept == "não"{
 				fmt.Println("Você cancelou a instalação")
 				os.Exit(0)
 			}
@@ -301,12 +306,12 @@ func (partition *Partition) printPartition() {
 }
 
 func setUefi() bool{
-
+var efiSupport bool
 		fmt.Println("Seu computador tem suporte a EFI?")
-		fmt.Println("[sim no]")
+		fmt.Println("[sim não]")
 		fmt.Scanf("%b", &efiSupport)
 
-		return efisupport
+		return efiSupport
 
 }
 
