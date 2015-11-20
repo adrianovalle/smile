@@ -322,9 +322,10 @@ func (partition *Partition) writePartitionTable(uefiEnabled string){
 
 		_ = execute("parted -s -a optimal " + partition.device + "mklabel gpt mkpart primary 1 500")
 
-		break
 	}
-	_ = execute ("parted -s -a optimal " + partition.device + "mkpart primary f2fs 100%"
+
+	_ = execute ("parted -s -a optimal " + partition.device +  partition.filesystem + " 100%")
+
 }
 
 func main() {
