@@ -320,12 +320,11 @@ func (partition *Partition) writePartitionTable(uefiEnabled string){
 
 	if uefiEnabled=="sim"{
 
-		_ = execute("parted mklabel gpt P1 fat 1 500")
-		_ = execute("parted mklabel gpt P1 f2fs 501 5000")	
+		_ = execute("parted -s -a optimal " + partition.device + "mklabel gpt mkpart primary 1 500")
 
 		break
 	}
-
+	_ = execute ("parted -s -a optimal " + partition.device + "mkpart primary f2fs 100%"
 }
 
 func main() {
