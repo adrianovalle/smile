@@ -110,6 +110,12 @@ func detectDevice() []string {
 	regex := r.FindAllString(string(cmdOut), -1)
 	return regex
 }
+//func rankMirrors(){
+	
+//	fmt.Println("Será efetuado o processo de ranking dos servidores mais usados. Isso pode demorar alguns minutos")
+//	_ = execute ("cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
+//	_ = execute ("rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist")
+//}
 
 func (connProfile *ConnectionProfile) printConnectionProfile() {
 	fmt.Printf("%s", execute("clear"))
@@ -325,7 +331,7 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 
 	if uefiEnabled == true {
 		fmt.Println(partition)
-		_ = execute("parted -s -a optimal /dev/" + partition.device + " mklabel gpt mkpart primary 1 500 mkpart primary 500 100%")
+		_ = execute("parted -s -a optimal /dev/" + partition.device + " mklabel gpt mkpart ESP 1 500 mkpart primary 500 100% set 1 boot on")
 		_ = execute("mkfs.fat -F32 /dev/" + partition.device + "1")
 		_ = execute("mkfs.f2fs /dev/" + partition.device + "2")
 
@@ -340,9 +346,9 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 func main() {
 	//	var connProfile ConnectionProfile
 	//	var locale Locale
-	var partition Partition
-	var uefi bool
-	verbose = true
+//	var partition Partition
+//	var uefi bool
+	verbose = false
 
 	//teclado
 
@@ -359,14 +365,17 @@ func main() {
 
 	//particionamento
 
-	uefi = setUefi()
+//	uefi = setUefi()
+//
+//	partition = *partition.setPartition()
 
-	partition = *partition.setPartition()
+//	partition.writePartitionTable(uefi)
 
-	partition.writePartitionTable(uefi)
+//	_ = execute ("mount /dev/" + partition.device + "2 /mnt")
+//	_ = execute ("mkdir -p /mnt/boot")
+//	_ = execute ("mount /dev/" + partition.device + "1 /mnt/boot")
 
-	//mkdir -p /mnt/boot
-	//mount ????
+//	rankMirrors()
 
 	//pacstrap -i /mnt base base-devel
 	//genfstab -U /mnt > /mnt/etc/fstab
