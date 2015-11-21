@@ -23,13 +23,21 @@ func check(e error) {
 func checkBool(text string)bool{
 var condition bool
 
-	if text == "sim" {
+	if text == "sim" || text == "yes" {
 		condition =true
 	}
 
 	return condition
-
 }
+func checkResponse(response bool) string {
+
+	if response == true {
+		return "yes"
+	}else{
+		return "no"
+	}	
+}
+
 func execute(cmd string) []byte {
 
 	cmdLine := strings.Fields(cmd)
@@ -80,7 +88,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		descWifiPass + connProfile.wifiPassword + "\n" +
 
-		descHidden + connProfile.hidden)
+		descHidden + checkResponse (connProfile.hidden))
 
 	err := ioutil.WriteFile(destinationFolder+"/"+connProfile.essid, data, 0777)
 	check(err)
@@ -95,7 +103,7 @@ func detectNetwork() []string {
 	regex := r.FindAllString(string(cmdOut), -1)
 	return regex
 }
-func detectPartitionTable() []string {
+func detectDevice() []string {
 
 	cmdOut := execute("lsblk")
 	r, _ := regexp.Compile("[s]{1}[d]{1}[a-z]{1}[ ]{1}")
@@ -119,13 +127,13 @@ func (connProfile *ConnectionProfile) printConnectionProfile() {
 
 		"\t\t\t\t\tSenha da Rede: " + connProfile.wifiPassword + "\n\n" +
 
-		"\t\t\t\t\tRede Oculta: " + connProfile.hidden + "\n")
+		"\t\t\t\t\tRede Oculta: " + checkResponse(connProfile.hidden) + "\n")
 
 }
 
 func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile {
-	var wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, wifiProfileValidation string
-var hidden bool
+	var wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden, wifiProfileValidation string
+
 
 	for {
 		fmt.Printf("%s", execute("clear"))
@@ -255,63 +263,66 @@ type Partition struct {
 }
 
 func (partition *Partition) setPartition() *Partition{
-	var device, filesystem, efiSupport, partitionTable, partitionValidation, overwriteAccept string
+	var device, filesystem, partitionTable, partitionValidation, overwriteAccept string
 
 	for {
 		fmt.Println("Informe em qual dispositivo você deseja criar o particionamento")
-		fmt.Println(detectPartitionTable())
+		fmt.Println(detectDevice())
 		fmt.Scanf("%s", &device)
 
 		fmt.Println("Informe o sistema de arquivos desejado")
 		fmt.Println("[f2fs]")
-		fmt.Scanf("%s",filesystem)
+		fmt.Scanf("%s",&filesystem)
 
 		fmt.Println("Informe a tabela de partição")
 		fmt.Println("[msdos gpt]")
-
-
-
+		fmt.Scanf("%s", &partitionTable)
 
 		*partition = Partition {device, filesystem, partitionTable}
 
 		partition.printPartition()
 
 		fmt.Println ("Os dados estão corretos?")
-		fmt.Scanf("%s",partitionValidation)
-
-
-		fmt.Println("Todos os dados serão apagados da unidade selecionada. Deseja continuar?")
-		fmt.Println("[sim não]")
-		fmt.Scanf("%s", &overwriteAccept)
-
+		fmt.Println ("[sim não]")
+		fmt.Scanf("%s",&partitionValidation)
 
 		if partitionValidation == "sim" {
-			if overwriteAccept == "não"{
-				fmt.Println("Você cancelou a instalação")
-				os.Exit(0)
-			}
-			return partition
+			break
 		}
+
 	}
+
+
+	fmt.Println("Todos os dados serão apagados da unidade selecionada. Deseja continuar?")
+	fmt.Println("[sim não]")
+	fmt.Scanf("%s", &overwriteAccept)
+
+
+	if overwriteAccept == "não" {
+		fmt.Println("Você cancelou a instalação")
+		os.Exit(0)
+	}
+	return partition
+
 
 }
 
 func (partition *Partition) printPartition() {
 
-		fmt.Println("Partição selecionada: " + partition.device + "/n" +
-			    "Sistema de arquivos:: " + partition.filesystem + "/n" +
+		fmt.Println("Partição selecionada: " + partition.device + "\n" +
+			    "Sistema de arquivos:: " + partition.filesystem + "\n" +
 			    "Tabela de partição : " + partition.partitionTable)
 
 
 }
 
 func setUefi() bool{
-var efiSupport bool
+var efiSupport string
 		fmt.Println("Seu computador tem suporte a EFI?")
 		fmt.Println("[sim não]")
-		fmt.Scanf("%b", &efiSupport)
+		fmt.Scanf("%s", &efiSupport)
 
-		return efiSupport
+		return checkBool(efiSupport)
 
 }
 
@@ -320,37 +331,41 @@ func (partition *Partition) writePartitionTable(uefiEnabled string){
 
 	if uefiEnabled=="sim"{
 
-		_ = execute("parted -s -a optimal " + partition.device + "mklabel gpt mkpart primary 1 500")
+		_ = execute("parted -s -a optimal " + partition.device + "mklabel gpt mkpart primary 1 500 mkpart primary 500 100%")
+		_ = execute("mkfs.fat -F32 " + partition.device)
+		_ = execute("mkfs.f2s " + partition.device)
 
+	}else{
+
+	_ = execute ("parted -s -a optimal " + partition.device + " mkpart primary 0% 100%")
+	_ = execute ("mkfs.f2fs " + partition.device)
+	
 	}
-
-	_ = execute ("parted -s -a optimal " + partition.device +  partition.filesystem + " 100%")
-
 }
 
 func main() {
-	var connProfile ConnectionProfile
-	var locale Locale
+//	var connProfile ConnectionProfile
+//	var locale Locale
 	var partition Partition
 
 	verbose = false
 
 	//teclado
 
-	locale = *locale.setLocale()
+//	locale = *locale.setLocale()
 
-	locale.writeLocale()
+//	locale.writeLocale()
 
 	//conexão de rede
-	connProfile = *connProfile.setConnectionProfile()
+//	connProfile = *connProfile.setConnectionProfile()
 
-	connProfile.writeWifiConfigToFile("/etc/netctl")
+//	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+//	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-	partition = *partition.setProfile()
+	partition = *partition.setPartition()
 
 	//mkdir -p /mnt/boot
 	//mount ????
