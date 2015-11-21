@@ -19,12 +19,12 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
-} 
-func checkBool(text string)bool{
-var condition bool
+}
+func checkBool(text string) bool {
+	var condition bool
 
 	if text == "sim" || text == "yes" {
-		condition =true
+		condition = true
 	}
 
 	return condition
@@ -33,9 +33,9 @@ func checkResponse(response bool) string {
 
 	if response == true {
 		return "yes"
-	}else{
+	} else {
 		return "no"
-	}	
+	}
 }
 
 func execute(cmd string) []byte {
@@ -88,7 +88,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		descWifiPass + connProfile.wifiPassword + "\n" +
 
-		descHidden + checkResponse (connProfile.hidden))
+		descHidden + checkResponse(connProfile.hidden))
 
 	err := ioutil.WriteFile(destinationFolder+"/"+connProfile.essid, data, 0777)
 	check(err)
@@ -134,7 +134,6 @@ func (connProfile *ConnectionProfile) printConnectionProfile() {
 func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile {
 	var wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, hidden, wifiProfileValidation string
 
-
 	for {
 		fmt.Printf("%s", execute("clear"))
 
@@ -164,7 +163,7 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Println("[sim não]")
 		fmt.Scanf("%s", &hidden)
 
-		*connProfile = ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword,checkBool(hidden)}
+		*connProfile = ConnectionProfile{wifiInterface, connectionType, wifiSecurityType, essid, ipMode, wifiPassword, checkBool(hidden)}
 
 		connProfile.printConnectionProfile()
 
@@ -172,7 +171,7 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Println("[sim não]")
 		fmt.Scanf("%s", &wifiProfileValidation)
 
-		if checkBool(wifiProfileValidation)== true {
+		if checkBool(wifiProfileValidation) == true {
 			break
 		}
 
@@ -257,12 +256,12 @@ func (locale *Locale) printLocale() {
 }
 
 type Partition struct {
-	device     string
-	filesystem string
+	device         string
+	filesystem     string
 	partitionTable string
 }
 
-func (partition *Partition) setPartition() *Partition{
+func (partition *Partition) setPartition() *Partition {
 	var device, filesystem, partitionTable, partitionValidation, overwriteAccept string
 
 	for {
@@ -272,19 +271,19 @@ func (partition *Partition) setPartition() *Partition{
 
 		fmt.Println("Informe o sistema de arquivos desejado")
 		fmt.Println("[f2fs]")
-		fmt.Scanf("%s",&filesystem)
+		fmt.Scanf("%s", &filesystem)
 
 		fmt.Println("Informe a tabela de partição")
 		fmt.Println("[msdos gpt]")
 		fmt.Scanf("%s", &partitionTable)
 
-		*partition = Partition {device, filesystem, partitionTable}
+		*partition = Partition{device, filesystem, partitionTable}
 
 		partition.printPartition()
 
-		fmt.Println ("Os dados estão corretos?")
-		fmt.Println ("[sim não]")
-		fmt.Scanf("%s",&partitionValidation)
+		fmt.Println("Os dados estão corretos?")
+		fmt.Println("[sim não]")
+		fmt.Scanf("%s", &partitionValidation)
 
 		if partitionValidation == "sim" {
 			break
@@ -292,11 +291,9 @@ func (partition *Partition) setPartition() *Partition{
 
 	}
 
-
 	fmt.Println("Todos os dados serão apagados da unidade selecionada. Deseja continuar?")
 	fmt.Println("[sim não]")
 	fmt.Scanf("%s", &overwriteAccept)
-
 
 	if overwriteAccept == "não" {
 		fmt.Println("Você cancelou a instalação")
@@ -304,68 +301,69 @@ func (partition *Partition) setPartition() *Partition{
 	}
 	return partition
 
-
 }
 
 func (partition *Partition) printPartition() {
 
-		fmt.Println("Partição selecionada: " + partition.device + "\n" +
-			    "Sistema de arquivos:: " + partition.filesystem + "\n" +
-			    "Tabela de partição : " + partition.partitionTable)
-
-
-}
-
-func setUefi() bool{
-var efiSupport string
-		fmt.Println("Seu computador tem suporte a EFI?")
-		fmt.Println("[sim não]")
-		fmt.Scanf("%s", &efiSupport)
-
-		return checkBool(efiSupport)
+	fmt.Println("Partição selecionada: " + partition.device + "\n" +
+		"Sistema de arquivos:: " + partition.filesystem + "\n" +
+		"Tabela de partição : " + partition.partitionTable)
 
 }
 
+func setUefi() bool {
+	var efiSupport string
+	fmt.Println("Seu computador tem suporte a EFI?")
+	fmt.Println("[sim não]")
+	fmt.Scanf("%s", &efiSupport)
 
-func (partition *Partition) writePartitionTable(uefiEnabled string){
+	return checkBool(efiSupport)
 
-	if uefiEnabled=="sim"{
+}
 
-		_ = execute("parted -s -a optimal " + partition.device + "mklabel gpt mkpart primary 1 500 mkpart primary 500 100%")
-		_ = execute("mkfs.fat -F32 " + partition.device)
-		_ = execute("mkfs.f2s " + partition.device)
+func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 
-	}else{
+	if uefiEnabled == true {
+		fmt.Println(partition)
+		_ = execute("parted -s -a optimal /dev/" + partition.device + " mklabel gpt mkpart primary 1 500 mkpart primary 500 100%")
+		_ = execute("mkfs.fat -F32 /dev/" + partition.device + "1")
+		_ = execute("mkfs.f2fs /dev/" + partition.device + "2")
 
-	_ = execute ("parted -s -a optimal " + partition.device + " mkpart primary 0% 100%")
-	_ = execute ("mkfs.f2fs " + partition.device)
-	
+	} else {
+
+		_ = execute("parted -s -a optimal /dev/" + partition.device + " mkpart primary 0% 100%")
+		_ = execute("mkfs.f2fs " + partition.device)
+
 	}
 }
 
 func main() {
-//	var connProfile ConnectionProfile
-//	var locale Locale
+	//	var connProfile ConnectionProfile
+	//	var locale Locale
 	var partition Partition
-
-	verbose = false
+	var uefi bool
+	verbose = true
 
 	//teclado
 
-//	locale = *locale.setLocale()
+	//	locale = *locale.setLocale()
 
-//	locale.writeLocale()
+	//	locale.writeLocale()
 
 	//conexão de rede
-//	connProfile = *connProfile.setConnectionProfile()
+	//	connProfile = *connProfile.setConnectionProfile()
 
-//	connProfile.writeWifiConfigToFile("/etc/netctl")
+	//	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-//	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+	//	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
+	uefi = setUefi()
+
 	partition = *partition.setPartition()
+
+	partition.writePartitionTable(uefi)
 
 	//mkdir -p /mnt/boot
 	//mount ????
