@@ -90,7 +90,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		descHidden + checkResponse(connProfile.hidden))
 
-	err := ioutil.WriteFile(destinationFolder+"/"+connProfile.essid, data, 0777)
+err := ioutil.WriteFile(destinationFolder+"/"+connProfile.essid, data, 0777)
 	check(err)
 
 }
@@ -214,7 +214,8 @@ func (locale *Locale) writeLocale() {
 
 	if locale.timezone == "Brasília" {
 		_ = execute("timedatectl set-ntp true")
-		_ = execute("ln -s -f /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime")
+		_ = execute("ln -s -f /usr/share/zoneinfo/Brazil/East /etc/localtime")
+		_ = execute("hwclock --systohc --utc")
 
 	}
 }
@@ -339,7 +340,7 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 	} else {
 
 		_ = execute("parted -s -a optimal /dev/" + partition.device + " mkpart primary 0% 100%")
-		_ = execute("mkfs.f2fs " + partition.device)
+		_ = execute("mkfs.f2fs /dev/" + partition.device + "1")
 
 	}
 }
@@ -378,14 +379,12 @@ func main() {
 
 	//	rankMirrors()
 
-//	_ = execute("pacstrap -i /mnt base base-devel")
-//	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
-//	_ = execute("arch-chroot /mnt /bin/bash")
+	_ = execute("pacstrap /mnt base base-devel")
+	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
+	_ = execute("arch-chroot /mnt /bin/bash")
 
-//	_ = execute("tzselect")
-//	_ = execute("ln -sf /usr/share/zoneinfo/Brazil/East /etc/localtime")
-
-//	_ = execute("hwclock --systohc --utc")
-//	_ = execute("mkinitcpio -p linux")
+	_ = execute("mkinitcpio -p linux")
+	_ = execute("pacman -S intel-ucode --noconfirm")
+	_ = execute("bootctl install")
 
 }
