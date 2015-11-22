@@ -384,6 +384,7 @@ func main() {
 	_ = execute("arch-chroot /mnt /bin/bash")
 
 	_ = execute("mkinitcpio -p linux")
+	_ = execute("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
 	_ = execute("pacman -S intel-ucode --noconfirm")
 	_ = execute("bootctl install")
 
