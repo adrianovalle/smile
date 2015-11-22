@@ -225,7 +225,7 @@ func (locale *Locale) setLocale() *Locale {
 	for {
 
 		fmt.Println("Qual língua você deseja que o sistema possua?")
-		fmt.Println("[Português-Brasileiro]")
+		fmt.Println("[PTBR]")
 		fmt.Scanf("%s", &language)
 
 		fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usá-la?")
@@ -378,14 +378,14 @@ func main() {
 
 	//	rankMirrors()
 
-	_ = execute("pacstrap -i /mnt base base-devel")
-	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
-	_ = execute("arch-chroot /mnt /bin/bash")
+//	_ = execute("pacstrap -i /mnt base base-devel")
+//	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
+//	_ = execute("arch-chroot /mnt /bin/bash")
 
-	_ = execute("tzselect")
-	_ = execute("ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime")
+//	_ = execute("tzselect")
+//	_ = execute("ln -sf /usr/share/zoneinfo/Brazil/East /etc/localtime")
 
-	_ = execute("hwclock --systohc --utc")
-	_ = execute("mkinitcpio -p linux")
+//	_ = execute("hwclock --systohc --utc")
+//	_ = execute("mkinitcpio -p linux")
 
 }
