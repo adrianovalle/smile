@@ -110,8 +110,9 @@ func detectDevice() []string {
 	regex := r.FindAllString(string(cmdOut), -1)
 	return regex
 }
+
 //func rankMirrors(){
-	
+
 //	fmt.Println("Será efetuado o processo de ranking dos servidores mais usados. Isso pode demorar alguns minutos")
 //	_ = execute ("cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
 //	_ = execute ("rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist")
@@ -344,47 +345,47 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 }
 
 func main() {
-	//	var connProfile ConnectionProfile
-	//	var locale Locale
-//	var partition Partition
-//	var uefi bool
+	var connProfile ConnectionProfile
+	var locale Locale
+	var partition Partition
+	var uefi bool
 	verbose = false
 
 	//teclado
 
-	//	locale = *locale.setLocale()
+	locale = *locale.setLocale()
 
-	//	locale.writeLocale()
+	locale.writeLocale()
 
 	//conexão de rede
-	//	connProfile = *connProfile.setConnectionProfile()
+	connProfile = *connProfile.setConnectionProfile()
 
-	//	connProfile.writeWifiConfigToFile("/etc/netctl")
+	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	//	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-//	uefi = setUefi()
-//
-//	partition = *partition.setPartition()
+	uefi = setUefi()
 
-//	partition.writePartitionTable(uefi)
+	partition = *partition.setPartition()
 
-//	_ = execute ("mount /dev/" + partition.device + "2 /mnt")
-//	_ = execute ("mkdir -p /mnt/boot")
-//	_ = execute ("mount /dev/" + partition.device + "1 /mnt/boot")
+	partition.writePartitionTable(uefi)
 
-//	rankMirrors()
+	_ = execute("mount /dev/" + partition.device + "2 /mnt")
+	_ = execute("mkdir -p /mnt/boot")
+	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
-	_ = execute ("pacstrap -i /mnt base base-devel")
-	_ = execute ("genfstab -U /mnt > /mnt/etc/fstab")
-	_ = execute ("arch-chroot /mnt /bin/bash")
+	//	rankMirrors()
 
-	_ = execute ("tzselect")
-	_ = execute ("ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime")
+	_ = execute("pacstrap -i /mnt base base-devel")
+	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
+	_ = execute("arch-chroot /mnt /bin/bash")
 
-	_ = execute ("hwclock --systohc --utc")
-	_ = execute ("mkinitcpio -p linux")
+	_ = execute("tzselect")
+	_ = execute("ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime")
+
+	_ = execute("hwclock --systohc --utc")
+	_ = execute("mkinitcpio -p linux")
 
 }
