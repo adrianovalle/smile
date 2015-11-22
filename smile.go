@@ -377,14 +377,14 @@ func main() {
 
 //	rankMirrors()
 
-	//pacstrap -i /mnt base base-devel
-	//genfstab -U /mnt > /mnt/etc/fstab
-	//arch-chroot /mnt /bin/bash
+	_ = execute ("pacstrap -i /mnt base base-devel")
+	_ = execute ("genfstab -U /mnt > /mnt/etc/fstab")
+	_ = execute ("arch-chroot /mnt /bin/bash")
 
-	//tzselect
-	//ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime
+	_ = execute ("tzselect")
+	_ = execute ("ln -sf /usr/share/zoneinfo/Zone???/Subzone??? /etc/localtime")
 
-	//hwclock --systohc --utc
-	//mkinitcpio -p linux
+	_ = execute ("hwclock --systohc --utc")
+	_ = execute ("mkinitcpio -p linux")
 
 }
