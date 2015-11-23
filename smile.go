@@ -345,47 +345,64 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 	}
 }
 
+
+func getUuidPartition(partition string) {
+
+
+	cmdOut:=execute("blkid " + partition)
+	r, _ := regexp.Compile("(^UUID=)*")                //"(?<=UUID=[[:graph:]])[a-zA-Z0-9-]*")
+	regex := r.FindAllString(string(cmdOut), -1)
+	fmt.Println(regex)
+
+}
+
+
+
+
 func main() {
-	var connProfile ConnectionProfile
-	var locale Locale
-	var partition Partition
-	var uefi bool
-	verbose = false
+//	var connProfile ConnectionProfile
+//	var locale Locale
+//	var partition Partition
+//	var uefi bool
+//	verbose = false
 
 	//teclado
 
-	locale = *locale.setLocale()
+//	locale = *locale.setLocale()
 
-	locale.writeLocale()
+//	locale.writeLocale()
 
 	//conexão de rede
-	connProfile = *connProfile.setConnectionProfile()
+//	connProfile = *connProfile.setConnectionProfile()
 
-	connProfile.writeWifiConfigToFile("/etc/netctl")
+//	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+//	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-	uefi = setUefi()
+//	uefi = setUefi()
 
-	partition = *partition.setPartition()
+//	partition = *partition.setPartition()
 
-	partition.writePartitionTable(uefi)
+//	partition.writePartitionTable(uefi)
 
-	_ = execute("mount /dev/" + partition.device + "2 /mnt")
-	_ = execute("mkdir -p /mnt/boot")
-	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
+//	_ = execute("mount /dev/" + partition.device + "2 /mnt")
+//	_ = execute("mkdir -p /mnt/boot")
+//	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
 	//	rankMirrors()
 
-	_ = execute("pacstrap /mnt base base-devel")
-	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
-	_ = execute("arch-chroot /mnt /bin/bash")
+//	_ = execute("pacstrap /mnt base base-devel")
+//	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
+//	_ = execute("arch-chroot /mnt /bin/bash")
 
-	_ = execute("mkinitcpio -p linux")
-	_ = execute("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
-	_ = execute("pacman -S intel-ucode --noconfirm")
-	_ = execute("bootctl install")
+//	_ = execute("mkinitcpio -p linux")
+//	_ = execute("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
+//	_ = execute("pacman -S intel-ucode --noconfirm")
+//	_ = execute("bootctl install")
+
+	getUuidPartition("/dev/sdc2")
+
 
 }
