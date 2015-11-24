@@ -195,7 +195,7 @@ type Locale struct {
 
 func (locale *Locale) writeLocale() {
 
-	if locale.language == "Português-Brasileiro" {
+	if locale.language == "PTBR" {
 		data := []byte("LANG=pt_BR.UTF-8")
 		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
 		check(err)
@@ -234,7 +234,7 @@ func (locale *Locale) setLocale() *Locale {
 		fmt.Scanf("%s", &keyboardLayout)
 
 		fmt.Println("Fuso horário")
-		fmt.Println("[Brasilia]")
+		fmt.Println("[Brasília]")
 		fmt.Scanf("%s", &timezone)
 
 		*locale = Locale{language, keyboardLayout, timezone}
