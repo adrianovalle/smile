@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-const version = "0.4.0"
+const version = "0.5.0"
 
 var verbose bool
 
@@ -356,7 +356,19 @@ func getUuidPartition(partition string) {
 
 }
 
+func setHostname(){
 
+var hostname string
+
+	fmt.Println("Informe o nome desejado para o seu computador")
+	fmt.Scanf("%s",hostname)
+
+	data:=[]byte(hostname)
+
+	err.ioutil.WriteFile("/etc/hostname",data,0777)
+
+	check(err)
+}
 
 
 func main() {
@@ -402,7 +414,10 @@ func main() {
 //	_ = execute("pacman -S intel-ucode --noconfirm")
 //	_ = execute("bootctl install")
 
-	getUuidPartition("/dev/sdc2")
+//	getUuidPartition("/dev/sdc2")
+
+
+
 
 
 }
