@@ -416,6 +416,8 @@ func main() {
 
 //	getUuidPartition("/dev/sdc2")
 
+//	setHostname()
+
 
 
 
