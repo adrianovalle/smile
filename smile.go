@@ -371,7 +371,6 @@ func setHostname() {
 func setRootPassword(){
 var password
 	fmt.println("Digite uma senha para usuário root")
-	fmt.Scanf("%s",&password)
 	_= execute("passwd")
 
 }
@@ -425,5 +424,11 @@ func main() {
 
 	//	_ = execute("pacman -S iw wpa_supplicant dialog")
 
-		setRootPassword()
+		setRootPassword	()
+		_ = execute ("umount -R /mnt")
+		
+
+
+
+
 }
