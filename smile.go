@@ -348,8 +348,8 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 func getUuidPartition(partition string) {
 
 	cmdOut := execute("blkid -s UUID " + partition)
-	r, _ := regexp.Compile(".*")
-	regex := r.FindAllString(string(cmdOut), -1)
+	r, _ := regexp.Compile(`"([^"]*)"`)
+	regex := r.FindAllStringSubmatch(string(cmdOut), 2)
 	fmt.Println(regex)
 
 }
