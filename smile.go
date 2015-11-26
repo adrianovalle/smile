@@ -368,11 +368,24 @@ func setHostname() {
 	check(err)
 }
 
-func setRootPassword(){
-	fmt.Println("Digite uma senha para usuário root")
-	_= execute("passwd")
+func setPassword(user string){
+	fmt.Println("Digite uma senha para o usuário " + user)
+	_= execute("passwd " + user)
 
 }
+
+func addUser(){
+var username,password string
+
+	fmt.Println("Digite o nome do usuário")
+	fmt.Scanf("%s",username)
+	
+	_ = execute ("useradd -m -s /bin/bash -G wheel,users,audio,video,cdrom,input " + username)
+
+}
+
+
+
 
 func main() {
 	//	var connProfile ConnectionProfile
@@ -423,8 +436,16 @@ func main() {
 
 	//	_ = execute("pacman -S iw wpa_supplicant dialog")
 
-	//	setRootPassword	()
-	//	_ = execute ("umount -R /mnt")
+	//	setPassword("root")
+
+		addUser()
+
+		setPassword(user)
+
+
+	//	_ = execute ("umount -R /mnt")i
+
+
 		
 
 
