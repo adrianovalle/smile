@@ -347,8 +347,8 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 
 func getUuidPartition(partition string) {
 
-	cmdOut := execute("blkid " + partition)
-	r, _ := regexp.Compile(".*") //"(?<=UUID=[[:graph:]])[a-zA-Z0-9-]*")
+	cmdOut := execute("blkid -s UUID " + partition)
+	r, _ := regexp.Compile(".*")
 	regex := r.FindAllString(string(cmdOut), -1)
 	fmt.Println(regex)
 
@@ -369,8 +369,7 @@ func setHostname() {
 }
 
 func setRootPassword(){
-var password
-	fmt.println("Digite uma senha para usuário root")
+	fmt.Println("Digite uma senha para usuário root")
 	_= execute("passwd")
 
 }
@@ -424,8 +423,8 @@ func main() {
 
 	//	_ = execute("pacman -S iw wpa_supplicant dialog")
 
-		setRootPassword	()
-		_ = execute ("umount -R /mnt")
+	//	setRootPassword	()
+	//	_ = execute ("umount -R /mnt")
 		
 
 
