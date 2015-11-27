@@ -356,11 +356,12 @@ func getUuidPartition(partition string) string{
 
 func writeBootConfiguration(uuid string){
 
-	data := []byte("LANG=pt_BR.UTF-8")
-	err := ioutil.WriteFile("title          Arch Linux"+
+	data := []byte("title          Arch Linux"+
 			+	"linux          /vmlinuz-linux"+
 			+	"initrd         /initramfs-linux.img"
-			+	"options        root=/dev/disk/by-uuid/" + uuid , data, 0777)
+			+	"options        root=/dev/disk/by-uuid/" +
+			
+	err := ioutil.WriteFile( , data, 0777)
 	check(err)
 
 }
@@ -447,7 +448,7 @@ func main() {
 	//	_ = execute("pacman -S intel-ucode --noconfirm")
 	//	_ = execute("bootctl install")
 
-//	uuid = getUuidPartition("/dev/block/mmcblk0p21")
+//	uuid = getUuidPartition("/dev/" + partition.device)
 
 	//	setHostname()
 
