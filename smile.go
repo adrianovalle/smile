@@ -345,14 +345,26 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 	}
 }
 
-func getUuidPartition(partition string) {
+func getUuidPartition(partition string) string{
 
 	cmdOut := execute("blkid -s UUID " + partition)
 	r, _ := regexp.Compile(`"([^"]*)"`)
-	regex := r.FindAllStringSubmatch(string(cmdOut), 2)
-	fmt.Println(regex)
+	regex := r.FindStringSubmatch(string(cmdOut))
+	return regex[1]
 
 }
+
+func writeBootConfiguration(uuid string){
+
+	data := []byte("LANG=pt_BR.UTF-8")
+	err := ioutil.WriteFile("title          Arch Linux"+
+			+	"linux          /vmlinuz-linux"+
+			+	"initrd         /initramfs-linux.img"
+			+	"options        root=/dev/disk/by-uuid/" + uuid , data, 0777)
+	check(err)
+
+}
+
 
 func setHostname() {
 
@@ -375,7 +387,7 @@ func setPassword(user string){
 }
 
 func addUser(){
-var username,password string
+var username string
 
 	fmt.Println("Digite o nome do usuário")
 	fmt.Scanf("%s",username)
@@ -392,6 +404,11 @@ func main() {
 	//	var locale Locale
 	//	var partition Partition
 	//	var uefi bool
+	//	var uuid string
+
+
+
+
 	//	verbose = false
 
 	//teclado
@@ -430,7 +447,7 @@ func main() {
 	//	_ = execute("pacman -S intel-ucode --noconfirm")
 	//	_ = execute("bootctl install")
 
-	getUuidPartition("/dev/block/mmcblk0p21")
+//	uuid = getUuidPartition("/dev/block/mmcblk0p21")
 
 	//	setHostname()
 
@@ -438,9 +455,9 @@ func main() {
 
 	//	setPassword("root")
 
-		addUser()
+//		addUser()
 
-		setPassword(user)
+//		setPassword(user)
 
 
 	//	_ = execute ("umount -R /mnt")i
