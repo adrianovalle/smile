@@ -5,8 +5,7 @@ package main
 import (
 	"fmt"
 	"os/exec"
-//	"strings"
-	"regexp"
+	"os"
 
 )
 
@@ -19,6 +18,23 @@ func check(e error) {
 }
 
 
+func execute(cmdLine string) []byte{
+
+
+
+
+
+
+	return out
+
+}
+
+
+
+
+
+
+
 func main() {
 
 	a,err:= exec.Command("ip", "link").Output()
@@ -27,16 +43,4 @@ func main() {
 	b:=string(a)
 	check(err)	
 	fmt.Printf("%s",d)
-	//	r,_:=regexp.Compile("[a-z]{3}[0-9][a-z][0-9]")
-	//  a:="amor casa wlan0 wlp2s0":x
-
-		r,_:=regexp.Compile("[ew]{1}[a-z]{3}[0-9]")
-		c:=r.FindAllString(b,-1)
-	fmt.Println(c)
-	//lsblk
-	//createPartitionTable(wifiInterface)
-	//parted
-	//mkfs
-	//mkdir -p /mnt/boot
-	//mount ????
 }
