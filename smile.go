@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"time"
 )
 
 const version = "0.5.0"
@@ -357,11 +358,10 @@ func getUuidPartition(partition string) string{
 func writeBootConfiguration(uuid string){
 
 	data := []byte("title          Arch Linux"+
-			+	"linux          /vmlinuz-linux"+
-			+	"initrd         /initramfs-linux.img"
-			+	"options        root=/dev/disk/by-uuid/" +
-			
-	err := ioutil.WriteFile( , data, 0777)
+				"linux          /vmlinuz-linux"+
+				"initrd         /initramfs-linux.img"+
+				"options        root=/dev/disk/by-uuid/" +uuid)	
+	err := ioutil.WriteFile("nnn" , data, 0777)
 	check(err)
 
 }
@@ -401,10 +401,10 @@ var username string
 
 
 func main() {
-	//	var connProfile ConnectionProfile
-	//	var locale Locale
-	//	var partition Partition
-	//	var uefi bool
+		var connProfile ConnectionProfile
+		var locale Locale
+		var partition Partition
+		var uefi bool
 	//	var uuid string
 
 
@@ -414,32 +414,38 @@ func main() {
 
 	//teclado
 
-	//	locale = *locale.setLocale()
+		locale = *locale.setLocale()
 
-	//	locale.writeLocale()
+		locale.writeLocale()
 
 	//conexão de rede
-	//	connProfile = *connProfile.setConnectionProfile()
+		connProfile = *connProfile.setConnectionProfile()
 
-	//	connProfile.writeWifiConfigToFile("/etc/netctl")
+		connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	//	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+		_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-	//	uefi = setUefi()
+		uefi = setUefi()
 
-	//	partition = *partition.setPartition()
+		partition = *partition.setPartition()
 
-	//	partition.writePartitionTable(uefi)
+		partition.writePartitionTable(uefi)
 
-	//	_ = execute("mount /dev/" + partition.device + "2 /mnt")
-	//	_ = execute("mkdir -p /mnt/boot")
-	//	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
+		_ = execute("mount /dev/" + partition.device + "2 /mnt")
+		_ = execute("mkdir -p /mnt/boot")
+		_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
 	//	rankMirrors()
 
-	//	_ = execute("pacstrap /mnt base base-devel")
+		_ = execute("pacstrap /mnt base base-devel")
+	
+		time.Sleep(10000 * time.Millisecond)
+
+
+	connProfile.writeWifiConfigToFile("/etc/netctl")
+
 	//	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
 	//	_ = execute("arch-chroot /mnt /bin/bash")
 
