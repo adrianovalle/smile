@@ -470,9 +470,11 @@ func main() {
 	//	_ = execute ("umount -R /mnt")i
 
 
-		
-
-
+	//Pós instalação 
+	
+	//Drivers intel
+	
+	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva") //olhar a configuração parao DRI 3 GLAMOR
 
 
 }
