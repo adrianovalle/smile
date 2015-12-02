@@ -439,14 +439,16 @@ func main() {
 
 	//	rankMirrors()
 
-		_ = execute("pacstrap /mnt base base-devel")
+	//	_ = execute("pacstrap /mnt base base-devel")
 	
 		time.Sleep(10000 * time.Millisecond)
 
 
-	connProfile.writeWifiConfigToFile("/etc/netctl")
+	//connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	//	_ = execute("genfstab -U /mnt > /mnt/etc/fstab")
+	out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
+	fmt.Println(out)
+
 	//	_ = execute("arch-chroot /mnt /bin/bash")
 
 	//	_ = execute("mkinitcpio -p linux")
@@ -467,14 +469,14 @@ func main() {
 //		setPassword(user)
 
 
-	//	_ = execute ("umount -R /mnt")i
+	//	_ = execute ("umount -R /mnt")
 
 
 	//Pós instalação 
 	
 	//Drivers intel
 	
-	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva") //olhar a configuração parao DRI 3 GLAMOR
+//	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva") //olhar a configuração parao DRI 3 GLAMOR
 
 
 }
