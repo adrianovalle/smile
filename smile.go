@@ -357,11 +357,11 @@ func getUuidPartition(partition string) string{
 
 func writeBootConfiguration(uuid string){
 
-	data := []byte("title          Arch Linux"+
-				"linux          /vmlinuz-linux"+
-				"initrd         /initramfs-linux.img"+
-				"options        root=/dev/disk/by-uuid/" +uuid)	
-	err := ioutil.WriteFile("nnn" , data, 0777)
+	data := []byte(		"title" + "\t" + "Arch Linux" +
+				"linux" + "\t" + "/vmlinuz-linux" +
+				"initrd" + "\t" + "/initramfs-linux.img" +
+				"options" + "\t" +"root=/dev/disk/by-uuid/" +uuid)	
+	err := ioutil.WriteFile("/boot/loader/entries/arch.conf" , data, 0777)
 	check(err)
 
 }
