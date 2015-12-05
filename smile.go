@@ -478,5 +478,6 @@ func main() {
 	
 //	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
 
+//	_ = execute ("pacman -S mate")
 
 }
