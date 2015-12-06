@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-	"time"
+	//"time"
 )
 
 const version = "0.5.0"
@@ -365,7 +365,13 @@ func writeBootConfiguration(uuid string){
 	check(err)
 
 }
+func writeFstab(fstab []byte){
 
+	
+	err := ioutil.WriteFile("/mnt/etc/fstab",fstab,0777)
+	check (err)
+
+}
 
 func setHostname() {
 
@@ -401,10 +407,10 @@ var username string
 
 
 func main() {
-		var connProfile ConnectionProfile
-		var locale Locale
-		var partition Partition
-		var uefi bool
+//		var connProfile ConnectionProfile
+	//	var locale Locale
+	//	var partition Partition
+	//	var uefi bool
 	//	var uuid string
 
 
@@ -414,40 +420,40 @@ func main() {
 
 	//teclado
 
-		locale = *locale.setLocale()
+	//	locale = *locale.setLocale()
 
-		locale.writeLocale()
+	//	locale.writeLocale()
 
 	//conexão de rede
-		connProfile = *connProfile.setConnectionProfile()
+//		connProfile = *connProfile.setConnectionProfile()
 
-		connProfile.writeWifiConfigToFile("/etc/netctl")
+//		connProfile.writeWifiConfigToFile("/etc/netctl")
 
-		_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+//		_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-		uefi = setUefi()
+	//	uefi = setUefi()
 
-		partition = *partition.setPartition()
+	//	partition = *partition.setPartition()
 
-		partition.writePartitionTable(uefi)
+	//	partition.writePartitionTable(uefi)
 
-		_ = execute("mount /dev/" + partition.device + "2 /mnt")
-		_ = execute("mkdir -p /mnt/boot")
-		_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
+	//	_ = execute("mount /dev/" + partition.device + "2 /mnt")
+	//	_ = execute("mkdir -p /mnt/boot")
+	//	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
 	//	rankMirrors()
 
 	//	_ = execute("pacstrap /mnt base base-devel")
 	
-		time.Sleep(10000 * time.Millisecond)
+	//	time.Sleep(10000 * time.Millisecond)
 
 
-	//connProfile.writeWifiConfigToFile("/etc/netctl")
+//	connProfile.writeWifiConfigToFile("/etc/netctl")
 
 	out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
-	fmt.Println(out)
+	writeFstab(out)
 
 	//	_ = execute("arch-chroot /mnt /bin/bash")
 
