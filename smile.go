@@ -403,6 +403,18 @@ var username string
 
 }
 
+//func Start(process *os.Process,args ...string) (p *os.Process, err error) {
+//	if args[0], err = exec.LookPath(args[0]); err == nil {
+//		var procAttr os.ProcAttr
+//		procAttr.Files = []*os.File{os.Stdin,
+//			os.Stdout, os.Stderr}
+//		p, err := process.StartProcess(args[0], args, &procAttr)
+//		if err == nil {
+//			return p, nil
+//		}
+//	}
+//	return nil, err
+//}
 
 
 
@@ -455,23 +467,33 @@ func main() {
 	//out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
 	//writeFstab(out)
 
-		cmd:= exec.Command("arch-chroot", "/mnt", "/bin/bash")
-		err := cmd.Start()
+                
+		var procAttr os.ProcAttr
+		procAttr.Files = []*os.File{os.Stdin,
+		                        os.Stdout, os.Stderr}
+
+
+		process, err := os.StartProcess("/bin/arch-chroot", []string{"/mnt /bin/bash && ls"}, &procAttr)
+		
 		check (err)
+
+//		_, _ = process.StartProcess("mkdir", "-p testando", &procAttr)
+
+
 
 //		time.Sleep(90000 * time.Millisecond)
 //		err=cmd.Wait()
 
-		cmd = exec.Command("mkinitcpio", "-p", "linux")
-		err = cmd.Start()
+//		cmd = exec.Command("mkinitcpio", "-p", "linux")
+//		err = cmd.Start()
 
 //		cmd = exec.Command("pacman", "-S", "f2fs-tools", "ntfs-3g", "dosfstools" ,  "--noconfirm")
 //		err = cmd.Start()
 	
-		cmd2 := *cmd
-		cmd2.Command("mkdir" , "-p", "teste")
+//		cmd2 := *cmd
+//		cmd2.Command("mkdir" , "-p", "teste")
 //		cmd = exec.Command("mkdir", "-p", "teste")
-		err = cmd2.Start()
+//		err = cmd2.Start()
 //		_ = execute("pacman -S intel-ucode --noconfirm")
 //		_ = execute("bootctl install")
 
@@ -500,7 +522,7 @@ func main() {
 
 //	_ = execute ("pacman -S mate")
 	time.Sleep(20000 * time.Millisecond)
-	err=cmd.Wait()
+	process.Wait()
 
 
 
