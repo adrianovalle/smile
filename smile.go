@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-	//"time"
+	"time"
 )
 
 const version = "0.5.0"
@@ -408,10 +408,10 @@ var username string
 
 func main() {
 //		var connProfile ConnectionProfile
-	//	var locale Locale
-	//	var partition Partition
-	//	var uefi bool
-	//	var uuid string
+//		var locale Locale
+//		var partition Partition
+//		var uefi bool
+//		var uuid string
 
 
 
@@ -452,23 +452,37 @@ func main() {
 
 //	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
-	writeFstab(out)
+	//out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
+	//writeFstab(out)
 
-	//	_ = execute("arch-chroot /mnt /bin/bash")
+		cmd:= exec.Command("arch-chroot", "/mnt", "/bin/bash")
+		err := cmd.Start()
+		check (err)
 
-	//	_ = execute("mkinitcpio -p linux")
-	//	_ = execute("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
-	//	_ = execute("pacman -S intel-ucode --noconfirm")
-	//	_ = execute("bootctl install")
+//		time.Sleep(90000 * time.Millisecond)
+//		err=cmd.Wait()
 
-//	uuid = getUuidPartition("/dev/" + partition.device)
+		cmd = exec.Command("mkinitcpio", "-p", "linux")
+		err = cmd.Start()
+
+//		cmd = exec.Command("pacman", "-S", "f2fs-tools", "ntfs-3g", "dosfstools" ,  "--noconfirm")
+//		err = cmd.Start()
+	
+		cmd2 := *cmd
+		cmd2.Command("mkdir" , "-p", "teste")
+//		cmd = exec.Command("mkdir", "-p", "teste")
+		err = cmd2.Start()
+//		_ = execute("pacman -S intel-ucode --noconfirm")
+//		_ = execute("bootctl install")
+
+//	uuid = getUuidPartition("/dev/sda2") //+ partition.device)
+//	writeBootConfiguration(uuid)
 
 	//	setHostname()
 
-	//	_ = execute("pacman -S iw wpa_supplicant dialog")
+//		_ = execute("pacman -S iw wpa_supplicant dialog")
 
-	//	setPassword("root")
+//		setPassword("root")
 
 //		addUser()
 
@@ -485,5 +499,9 @@ func main() {
 //	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
 
 //	_ = execute ("pacman -S mate")
+	time.Sleep(20000 * time.Millisecond)
+	err=cmd.Wait()
+
+
 
 }
