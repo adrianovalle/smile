@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-	"time"
+//	"time"
 )
 
 const version = "0.5.0"
@@ -415,77 +415,68 @@ var username string
 //	}
 //	return nil, err
 //}
+func copyBaseConfig(){
 
+
+	_ = execute("cp /etc/vconsole.conf /mnt/etc/vconsole.conf")
+	_ = execute("cp /etc/locale.conf /mnt/etc/locale.conf")
+	_ = execute("cp /etc/netctl/* /mnt/etc/netctl")
+	_ = execute("ln -s -f /mnt/usr/share/zoneinfo/Brazil/East/ /mnt/etc/localtime")
+
+}
 
 
 func main() {
-//		var connProfile ConnectionProfile
-//		var locale Locale
-//		var partition Partition
-//		var uefi bool
-//		var uuid string
+		var connProfile ConnectionProfile
+		var locale Locale
+		var partition Partition
+		var uefi bool
+	//	var uuid string
 
 
 
-
-	//	verbose = false
+		verbose = false
 
 	//teclado
 
-	//	locale = *locale.setLocale()
+		locale = *locale.setLocale()
 
-	//	locale.writeLocale()
+		locale.writeLocale()
 
 	//conexão de rede
-//		connProfile = *connProfile.setConnectionProfile()
+		connProfile = *connProfile.setConnectionProfile()
 
-//		connProfile.writeWifiConfigToFile("/etc/netctl")
+		connProfile.writeWifiConfigToFile("/etc/netctl")
 
-//		_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+		_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-	//	uefi = setUefi()
+		uefi = setUefi()
 
-	//	partition = *partition.setPartition()
+		partition = *partition.setPartition()
 
-	//	partition.writePartitionTable(uefi)
+		partition.writePartitionTable(uefi)
 
-	//	_ = execute("mount /dev/" + partition.device + "2 /mnt")
-	//	_ = execute("mkdir -p /mnt/boot")
-	//	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
+		_ = execute("mount /dev/" + partition.device + "2 /mnt")
+		_ = execute("mkdir -p /mnt/boot")
+		_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
 	//	rankMirrors()
-
-	//	_ = execute("pacstrap /mnt base base-devel")
+		fmt.Println("Instalando base Arch")
+		_ = execute("pacstrap /mnt base base-devel")
 	
 	//	time.Sleep(10000 * time.Millisecond)
 
 
-//	connProfile.writeWifiConfigToFile("/etc/netctl")
+	connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
 
-	//out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
-	//writeFstab(out)
+	out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
+	writeFstab(out)
 
-                
-		var procAttr os.ProcAttr
-		procAttr.Files = []*os.File{os.Stdin,
-		                        os.Stdout, os.Stderr}
-
-
-		process, err := os.StartProcess("/bin/arch-chroot", []string{"/mnt /bin/bash && ls"}, &procAttr)
-		
-		check (err)
-
-//		_, _ = process.StartProcess("mkdir", "-p testando", &procAttr)
-
-
-
-//		time.Sleep(90000 * time.Millisecond)
-//		err=cmd.Wait()
+         copyBaseConfig()       
 
 //		cmd = exec.Command("mkinitcpio", "-p", "linux")
-//		err = cmd.Start()
 
 //		cmd = exec.Command("pacman", "-S", "f2fs-tools", "ntfs-3g", "dosfstools" ,  "--noconfirm")
 //		err = cmd.Start()
@@ -497,7 +488,7 @@ func main() {
 //		_ = execute("pacman -S intel-ucode --noconfirm")
 //		_ = execute("bootctl install")
 
-//	uuid = getUuidPartition("/dev/sda2") //+ partition.device)
+//	uuid = getUuidPartition("/dev/" + partition.device)
 //	writeBootConfiguration(uuid)
 
 	//	setHostname()
@@ -521,8 +512,8 @@ func main() {
 //	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
 
 //	_ = execute ("pacman -S mate")
-	time.Sleep(20000 * time.Millisecond)
-	process.Wait()
+//	time.Sleep(20000 * time.Millisecond)
+//	process.Wait()
 
 
 
