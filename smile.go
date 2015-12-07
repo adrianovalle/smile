@@ -202,7 +202,7 @@ func (locale *Locale) writeLocale() {
 		check(err)
 	}
 
-	if locale.keyboardLayout == "[br-abnt2]" {
+	if locale.keyboardLayout == "br-abnt2" {
 
 		_ = execute("loadkeys br-abnt2")
 
@@ -469,7 +469,7 @@ func main() {
 	//	time.Sleep(10000 * time.Millisecond)
 
 
-	connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
+	//connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
 
 	out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
 	writeFstab(out)
