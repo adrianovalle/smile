@@ -29,7 +29,7 @@ func main() {
     // apposed to one big string). We'll give `ls` a few
     // common arguments. Note that the first argument should
     // be the program name.
-    args := []string{"arch-chroot", "/mnt", "/bin/bash"}
+    args := []string{"arch-chroot", "/mnt", "/bin/bash", "-c","'mkdir","ggg'"}
 
     // `Exec` also needs a set of [environment variables](environment-variables)
     // to use. Here we just provide our current
