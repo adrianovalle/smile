@@ -20,7 +20,7 @@ func main() {
     // absolute path to the binary we want to execute, so
     // we'll use `exec.LookPath` to find it (probably
     // `/bin/ls`).
-    binary, lookErr := exec.LookPath("arch-chroot")
+    binary, lookErr := exec.LookPath("bash")
     if lookErr != nil {
         panic(lookErr)
     }
@@ -29,7 +29,9 @@ func main() {
     // apposed to one big string). We'll give `ls` a few
     // common arguments. Note that the first argument should
     // be the program name.
-    args := []string{"arch-chroot", "/mnt", "/bin/bash", "-c","'mkdir","ggg'"}
+   // args := []string{"arch-chroot", "/mnt", "/bin/bash", "-c","'mkdir","ggg'"}
+	args := []string{"bash", "-c", "ls > 'tesss.txt' ; ls -lh > 'hadouken.txt'"}
+
 
     // `Exec` also needs a set of [environment variables](environment-variables)
     // to use. Here we just provide our current
