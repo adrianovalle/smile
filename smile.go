@@ -423,7 +423,8 @@ func copyBaseConfig() {
 
 	_ = execute("cp /etc/vconsole.conf /mnt/etc/vconsole.conf")
 	_ = execute("cp /etc/locale.conf /mnt/etc/locale.conf")
-	_ = execute("cp /etc/netctl/* /mnt/etc/netctl")
+	//_ = execute("cp /etc/netctl/* /mnt/etc/netctl")
+//	connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
 	_ = execute("ln -s -f /mnt/usr/share/zoneinfo/Brazil/East/ /mnt/etc/localtime")
 
 }
