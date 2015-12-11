@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-//	"time"
+	//	"time"
 )
 
 const version = "0.5.0"
@@ -62,6 +62,23 @@ type ConnectionProfile struct {
 	ipMode           string
 	wifiPassword     string
 	hidden           bool
+}
+
+func start(args ...string) (p *os.Process, err error) {
+	if args[0], err = exec.LookPath(args[0]); err == nil {
+		var procAttr os.ProcAttr
+		procAttr.Files = []*os.File{os.Stdin,
+			os.Stdout, os.Stderr}
+		p, err := os.StartProcess(args[0], args, &procAttr)
+		if err == nil {
+			return p, nil
+		}
+	}
+	return nil, err
+
+	//        if proc, err := Start("bash", "-c", "mkdir hello; mkdir badabes"); err == nil {
+	//        fmt.Println("Feliz Natal, ho ho ho")
+	//               proc.Wait()
 }
 
 func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder string) {
@@ -346,7 +363,7 @@ func (partition *Partition) writePartitionTable(uefiEnabled bool) {
 	}
 }
 
-func getUuidPartition(partition string) string{
+func getUuidPartition(partition string) string {
 
 	cmdOut := execute("blkid -s UUID " + partition)
 	r, _ := regexp.Compile(`"([^"]*)"`)
@@ -355,21 +372,20 @@ func getUuidPartition(partition string) string{
 
 }
 
-func writeBootConfiguration(uuid string){
+func writeBootConfiguration(uuid string) {
 
-	data := []byte(		"title" + "\t" + "Arch Linux" +
-				"linux" + "\t" + "/vmlinuz-linux" +
-				"initrd" + "\t" + "/initramfs-linux.img" +
-				"options" + "\t" +"root=/dev/disk/by-uuid/" +uuid)	
-	err := ioutil.WriteFile("/boot/loader/entries/arch.conf" , data, 0777)
+	data := []byte("title" + "\t" + "Arch Linux" +
+		"linux" + "\t" + "/vmlinuz-linux" +
+		"initrd" + "\t" + "/initramfs-linux.img" +
+		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid)
+	err := ioutil.WriteFile("/boot/loader/entries/arch.conf", data, 0777)
 	check(err)
 
 }
-func writeFstab(fstab []byte){
+func writeFstab(fstab []byte) {
 
-	
-	err := ioutil.WriteFile("/mnt/etc/fstab",fstab,0777)
-	check (err)
+	err := ioutil.WriteFile("/mnt/etc/fstab", fstab, 0777)
+	check(err)
 
 }
 
@@ -387,36 +403,23 @@ func setHostname() {
 	check(err)
 }
 
-func setPassword(user string){
+func setPassword(user string) {
 	fmt.Println("Digite uma senha para o usuário " + user)
-	_= execute("passwd " + user)
+	_ = execute("passwd " + user)
 
 }
 
-func addUser(){
-var username string
+func addUser() {
+	var username string
 
 	fmt.Println("Digite o nome do usuário")
-	fmt.Scanf("%s",username)
-	
-	_ = execute ("useradd -m -s /bin/bash -G wheel,users,audio,video,cdrom,input " + username)
+	fmt.Scanf("%s", username)
+
+	_ = execute("useradd -m -s /bin/bash -G wheel,users,audio,video,cdrom,input " + username)
 
 }
 
-//func Start(process *os.Process,args ...string) (p *os.Process, err error) {
-//	if args[0], err = exec.LookPath(args[0]); err == nil {
-//		var procAttr os.ProcAttr
-//		procAttr.Files = []*os.File{os.Stdin,
-//			os.Stdout, os.Stderr}
-//		p, err := process.StartProcess(args[0], args, &procAttr)
-//		if err == nil {
-//			return p, nil
-//		}
-//	}
-//	return nil, err
-//}
-func copyBaseConfig(){
-
+func copyBaseConfig() {
 
 	_ = execute("cp /etc/vconsole.conf /mnt/etc/vconsole.conf")
 	_ = execute("cp /etc/locale.conf /mnt/etc/locale.conf")
@@ -425,96 +428,102 @@ func copyBaseConfig(){
 
 }
 
+//func start(args ...string) (p *os.Process, err error) {
+//	if args[0], err = exec.LookPath(args[0]); err == nil {
+//		var procAttr os.ProcAttr
+//		procAttr.Files = []*os.File{os.Stdin,
+//			os.Stdout, os.Stderr}
+//		p, err := os.StartProcess(args[0], args, &procAttr)
+//		if err == nil {
+//			return p, nil
+//		}
+//	}
+//	return nil, err
+
+//        if proc, err := start("bash", "-c", "mkdir hello; mkdir badabes"); err == nil {
+//        fmt.Println("Feliz Natal, ho ho ho")
+//               proc.Wait()
+//}
 
 func main() {
-		var connProfile ConnectionProfile
-		var locale Locale
-		var partition Partition
-		var uefi bool
+	var connProfile ConnectionProfile
+	var locale Locale
+	var partition Partition
+	var uefi bool
 	//	var uuid string
 
-
-
-		verbose = false
+	verbose = false
 
 	//teclado
 
-		locale = *locale.setLocale()
+	locale = *locale.setLocale()
 
-		locale.writeLocale()
+	locale.writeLocale()
 
 	//conexão de rede
-		connProfile = *connProfile.setConnectionProfile()
+	connProfile = *connProfile.setConnectionProfile()
 
-		connProfile.writeWifiConfigToFile("/etc/netctl")
+	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-		_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+	//_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
-		uefi = setUefi()
+	uefi = setUefi()
 
-		partition = *partition.setPartition()
+	partition = *partition.setPartition()
 
-		partition.writePartitionTable(uefi)
+	partition.writePartitionTable(uefi)
 
-		_ = execute("mount /dev/" + partition.device + "2 /mnt")
-		_ = execute("mkdir -p /mnt/boot")
-		_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
+	_ = execute("mount /dev/" + partition.device + "2 /mnt")
+	_ = execute("mkdir -p /mnt/boot")
+	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
 	//	rankMirrors()
-		fmt.Println("Instalando base Arch")
-		_ = execute("pacstrap /mnt base base-devel")
-	
+	fmt.Println("Instalando base Arch")
+	_ = execute("pacstrap /mnt base base-devel")
+
 	//	time.Sleep(10000 * time.Millisecond)
 
-
-	//connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
-
-	out:= execute("genfstab -U /mnt") // > /mnt/etc/fstab")
+	out := execute("genfstab -U /mnt") // > /mnt/etc/fstab")
 	writeFstab(out)
 
-         copyBaseConfig()       
+	copyBaseConfig()
 
-//		cmd = exec.Command("mkinitcpio", "-p", "linux")
+	proc, err := start("bash", "-c", "arch-chroot /mnt /bin/bash", "-c", "mkdir 'teste'")
+	check(err)
 
-//		cmd = exec.Command("pacman", "-S", "f2fs-tools", "ntfs-3g", "dosfstools" ,  "--noconfirm")
-//		err = cmd.Start()
-	
-//		cmd2 := *cmd
-//		cmd2.Command("mkdir" , "-p", "teste")
-//		cmd = exec.Command("mkdir", "-p", "teste")
-//		err = cmd2.Start()
-//		_ = execute("pacman -S intel-ucode --noconfirm")
-//		_ = execute("bootctl install")
+	//		cmd = exec.Command("mkinitcpio", "-p", "linux")
 
-//	uuid = getUuidPartition("/dev/" + partition.device)
-//	writeBootConfiguration(uuid)
+	//		cmd = exec.Command("pacman", "-S", "f2fs-tools", "ntfs-3g", "dosfstools" ,  "--noconfirm")
+	//		err = cmd.Start()
+
+	//		_ = execute("pacman -S intel-ucode --noconfirm")
+	//		_ = execute("bootctl install")
+
+	//	uuid = getUuidPartition("/dev/" + partition.device)
+	//	writeBootConfiguration(uuid)
 
 	//	setHostname()
 
-//		_ = execute("pacman -S iw wpa_supplicant dialog")
+	//		_ = execute("pacman -S iw wpa_supplicant dialog")
 
-//		setPassword("root")
+	//		setPassword("root")
 
-//		addUser()
+	//		addUser()
 
-//		setPassword(user)
-
+	//		setPassword(user)
 
 	//	_ = execute ("umount -R /mnt")
 
+	//Pós instalação
 
-	//Pós instalação 
-	
 	//Drivers intel
-	
-//	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
 
-//	_ = execute ("pacman -S mate")
-//	time.Sleep(20000 * time.Millisecond)
-//	process.Wait()
+	//	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
 
-
+	//	_ = execute ("pacman -S mate")
+	//	time.Sleep(20000 * time.Millisecond)
+		proc.Wait()
 
 }
