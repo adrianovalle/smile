@@ -6,7 +6,7 @@ import (
 //	"os"
 	"os/exec"
 //	"regexp"
-	"strings"
+//	"strings"
 //	"time"
 )
 
@@ -16,13 +16,10 @@ func check(e error) {
 	}
 }
 
-func execute(cmd string) []byte {
+func execute()[]byte {
 
-	cmdLine := strings.Fields(cmd)
-	command := cmdLine[0]
-	parameters := cmdLine[1:len(cmdLine)]
 
-	out, err := exec.Command(command, parameters...).Output()
+	out, err := exec.Command("bash", "-c","arch-chroot '/mnt' '/bin/bash' -c 'mkdir teste ;ls > teste.txt'").Output()
 
 	check(err)
 //	if verbose == true {
@@ -32,7 +29,7 @@ func execute(cmd string) []byte {
 }
 func main(){
 
-	_ = execute ("arch-chroot /mnt /bin/bash -c 'mkdir hadouken'")
+	_ = execute()
 
 
 }

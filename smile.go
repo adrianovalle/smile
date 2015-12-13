@@ -64,21 +64,16 @@ type ConnectionProfile struct {
 	hidden           bool
 }
 
-func start(args ...string) (p *os.Process, err error) {
-	if args[0], err = exec.LookPath(args[0]); err == nil {
-		var procAttr os.ProcAttr
-		procAttr.Files = []*os.File{os.Stdin,
-			os.Stdout, os.Stderr}
-		p, err := os.StartProcess(args[0], args, &procAttr)
-		if err == nil {
-			return p, nil
-		}
-	}
-	return nil, err
+func executeInArchChroot(cmd string) {
 
-	//        if proc, err := Start("bash", "-c", "mkdir hello; mkdir badabes"); err == nil {
-	//        fmt.Println("Feliz Natal, ho ho ho")
-	//               proc.Wait()
+var procAttr os.ProcAttr
+
+		procAttr.Files = []*os.File{os.Stdin,os.Stdout, os.Stderr}
+
+		_, err := os.StartProcess("bash", "-c","arch-chroot '/mnt' '/bin/bash' -c ", "'" + cmd + "'", &procAttr)
+		
+		check(err)
+	
 }
 
 func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder string) {
@@ -491,8 +486,8 @@ func main() {
 
 	copyBaseConfig()
 
-	proc, err := start("bash", "-c", "arch-chroot /mnt /bin/bash", "-c", "mkdir 'teste'")
-	check(err)
+	
+	executeInArchChroot("mkdir hohoho")
 
 	//		cmd = exec.Command("mkinitcpio", "-p", "linux")
 
@@ -525,6 +520,6 @@ func main() {
 
 	//	_ = execute ("pacman -S mate")
 	//	time.Sleep(20000 * time.Millisecond)
-		proc.Wait()
+		
 
 }
