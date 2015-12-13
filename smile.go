@@ -66,14 +66,12 @@ type ConnectionProfile struct {
 
 func executeInArchChroot(cmd string) []byte {
 
-
-
-        out, err := exec.Command("bash", "-c","arch-chroot '/mnt' '/bin/bash' -c '" + cmd + "'").Output()
+	out, err := exec.Command("bash", "-c", "arch-chroot '/mnt' '/bin/bash' -c '"+cmd+"'").Output()
 
 	check(err)
 
 	return out
-				
+
 }
 
 func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder string) {
@@ -369,6 +367,9 @@ func getUuidPartition(partition string) string {
 
 func writeBootConfiguration(uuid string) {
 
+	_ = execute("mkdir /mnt/boot/loader")
+	_ = execute("mkdir /mnt/boot/loader/entries")
+
 	data := []byte("title" + "\t" + "Arch Linux" +
 		"linux" + "\t" + "/vmlinuz-linux" +
 		"initrd" + "\t" + "/initramfs-linux.img" +
@@ -405,12 +406,11 @@ func setPassword(user string) {
 }
 
 func addUser(username string, password string) {
-	
 
-	fmt.Println("Digite o nome do usuÃ¡rio")
+	fmt.Println("Digite o nome do usuario")
 	fmt.Scanf("%s", username)
 
-	_ = execute("useradd -m -s /bin/bash -G wheel,users,audio,video,input " + username + " -p " + password)
+	_ = executeInArchChroot("useradd -m -s /bin/bash -G wheel,users,audio,video,input " + username + " -p " + password)
 
 }
 
@@ -419,27 +419,10 @@ func copyBaseConfig() {
 	_ = execute("cp /etc/vconsole.conf /mnt/etc/vconsole.conf")
 	_ = execute("cp /etc/locale.conf /mnt/etc/locale.conf")
 	//_ = execute("cp /etc/netctl/* /mnt/etc/netctl")
-//	connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
+	connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
 	_ = execute("ln -s -f /mnt/usr/share/zoneinfo/Brazil/East/ /mnt/etc/localtime")
 
 }
-
-//func start(args ...string) (p *os.Process, err error) {
-//	if args[0], err = exec.LookPath(args[0]); err == nil {
-//		var procAttr os.ProcAttr
-//		procAttr.Files = []*os.File{os.Stdin,
-//			os.Stdout, os.Stderr}
-//		p, err := os.StartProcess(args[0], args, &procAttr)
-//		if err == nil {
-//			return p, nil
-//		}
-//	}
-//	return nil, err
-
-//        if proc, err := start("bash", "-c", "mkdir hello; mkdir badabes"); err == nil {
-//        fmt.Println("Feliz Natal, ho ho ho")
-//               proc.Wait()
-//}
 
 func main() {
 	var connProfile ConnectionProfile
@@ -476,13 +459,12 @@ func main() {
 	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
 	//	rankMirrors()
-	fmt.Println("Instalando base Arch")
 
+	fmt.Println("Instalando base Arch")
 
 	_ = execute("pacstrap /mnt base base-devel")
 
-	
-	fmt.Println("Efetuando configurações adicionais")
+	fmt.Println("Efetuando configuracoes adicionais")
 
 	out := execute("genfstab -U /mnt") // > /mnt/etc/fstab")
 
@@ -490,19 +472,16 @@ func main() {
 
 	copyBaseConfig()
 
-	
-	_=executeInArchChroot("mkinitcpio -p linux")
+	_ = executeInArchChroot("mkinitcpio -p linux")
 
-	_=executeInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
+	_ = executeInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
 
-	_=executeInArchChroot("pacman -S intel-ucode --noconfirm")
-	
-	_=executeInArchChroot("bootctl install")
+	_ = executeInArchChroot("pacman -S intel-ucode --noconfirm")
 
-	fmt.Println(	
-	
+	_ = executeInArchChroot("bootctl install")
+
 	uuid = getUuidPartition("/dev/" + partition.device + "2")
-	
+
 	writeBootConfiguration(uuid)
 
 	setHostname()
@@ -517,14 +496,18 @@ func main() {
 
 	//	_ = execute ("umount -R /mnt")
 
-	//PÃ³s instalaÃ§Ã£o
+	//Perfis instalacao
 
 	//Drivers intel
 
-	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
+	fmt.Println("Instalando drivers adicionais")
 
-	_ = execute ("pacman -S pantheon --noconfirm")
-		
-	fmt.Println ("Instalação finalizada - Divirta-se :)")
-	
+	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva --noconfirm")
+
+	fmt.Println("Instalando interface grafica")
+
+	_ = execute("pacman -S pantheon --noconfirm")
+
+	fmt.Println("Instalacao finalizada - Divirta-se :)")
+
 }
