@@ -410,7 +410,7 @@ func addUser(username string, password string) {
 	fmt.Println("Digite o nome do usuário")
 	fmt.Scanf("%s", username)
 
-	_ = execute("useradd -m -s /bin/bash -G wheel,users,audio,video,input " + username + "-p " password)
+	_ = execute("useradd -m -s /bin/bash -G wheel,users,audio,video,input " + username + " -p " + password)
 
 }
 
@@ -446,7 +446,7 @@ func main() {
 	var locale Locale
 	var partition Partition
 	var uefi bool
-	//	var uuid string
+	var uuid string
 
 	verbose = false
 
@@ -487,12 +487,12 @@ func main() {
 	copyBaseConfig()
 
 	
-	execInArchChroot("mkinitcpio -p linux")
+	_=executeInArchChroot("mkinitcpio -p linux")
 
-	execInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
+	_=executeInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
 
-	execInArchChroot("pacman -S intel-ucode --noconfirm")
-	execInArchChroot("bootctl install")
+	_=executeInArchChroot("pacman -S intel-ucode --noconfirm")
+	_=executeInArchChroot("bootctl install")
 
 	uuid = getUuidPartition("/dev/" + partition.device + "2")
 	writeBootConfiguration(uuid)
