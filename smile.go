@@ -410,7 +410,7 @@ func addUser(username string, password string) {
 	fmt.Println("Digite o nome do usuario")
 	fmt.Scanf("%s", username)
 
-	_ = executeInArchChroot("useradd -m -s /bin/bash -G wheel,users,audio,video,input " + username + " -p " + password)
+	_ = executeInArchChroot("useradd -m -s /bin/bash -G wheel,users,audio,video,input,games " + username + " -p " + password)
 
 }
 
@@ -419,7 +419,7 @@ func copyBaseConfig() {
 	_ = execute("cp /etc/vconsole.conf /mnt/etc/vconsole.conf")
 	_ = execute("cp /etc/locale.conf /mnt/etc/locale.conf")
 	//_ = execute("cp /etc/netctl/* /mnt/etc/netctl")
-	connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
+	//connProfile.writeWifiConfigToFile("/mnt/etc/netctl")
 	_ = execute("ln -s -f /mnt/usr/share/zoneinfo/Brazil/East/ /mnt/etc/localtime")
 
 }
@@ -472,7 +472,7 @@ func main() {
 
 	copyBaseConfig()
 
-	_ = executeInArchChroot("mkinitcpio -p linux")
+	//_ = executeInArchChroot("mkinitcpio -p linux")
 
 	_ = executeInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
 
