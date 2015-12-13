@@ -64,16 +64,16 @@ type ConnectionProfile struct {
 	hidden           bool
 }
 
-func executeInArchChroot(cmd string) {
+func executeInArchChroot(cmd string) []byte {
 
-var procAttr os.ProcAttr
 
-		procAttr.Files = []*os.File{os.Stdin,os.Stdout, os.Stderr}
 
-		_, err := os.StartProcess("bash", "-c","arch-chroot '/mnt' '/bin/bash' -c ", "'" + cmd + "'", &procAttr)
-		
-		check(err)
-	
+        out, err := exec.Command("bash", "-c","arch-chroot '/mnt' '/bin/bash' -c '" + cmd + "'").Output()
+
+	check(err)
+
+	return out
+				
 }
 
 func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder string) {
@@ -373,7 +373,7 @@ func writeBootConfiguration(uuid string) {
 		"linux" + "\t" + "/vmlinuz-linux" +
 		"initrd" + "\t" + "/initramfs-linux.img" +
 		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid)
-	err := ioutil.WriteFile("/boot/loader/entries/arch.conf", data, 0777)
+	err := ioutil.WriteFile("/mnt/boot/loader/entries/arch.conf", data, 0777)
 	check(err)
 
 }
@@ -393,7 +393,7 @@ func setHostname() {
 
 	data := []byte(hostname)
 
-	err := ioutil.WriteFile("/etc/hostname", data, 0777)
+	err := ioutil.WriteFile("/mnt/etc/hostname", data, 0777)
 
 	check(err)
 }
@@ -404,13 +404,13 @@ func setPassword(user string) {
 
 }
 
-func addUser() {
-	var username string
+func addUser(username string, password string) {
+	
 
 	fmt.Println("Digite o nome do usuário")
 	fmt.Scanf("%s", username)
 
-	_ = execute("useradd -m -s /bin/bash -G wheel,users,audio,video,cdrom,input " + username)
+	_ = execute("useradd -m -s /bin/bash -G wheel,users,audio,video,input " + username + "-p " password)
 
 }
 
@@ -487,22 +487,19 @@ func main() {
 	copyBaseConfig()
 
 	
-	executeInArchChroot("mkdir hohoho")
+	execInArchChroot("mkinitcpio -p linux")
 
-	//		cmd = exec.Command("mkinitcpio", "-p", "linux")
+	execInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
 
-	//		cmd = exec.Command("pacman", "-S", "f2fs-tools", "ntfs-3g", "dosfstools" ,  "--noconfirm")
-	//		err = cmd.Start()
+	execInArchChroot("pacman -S intel-ucode --noconfirm")
+	execInArchChroot("bootctl install")
 
-	//		_ = execute("pacman -S intel-ucode --noconfirm")
-	//		_ = execute("bootctl install")
+	uuid = getUuidPartition("/dev/" + partition.device + "2")
+	writeBootConfiguration(uuid)
 
-	//	uuid = getUuidPartition("/dev/" + partition.device)
-	//	writeBootConfiguration(uuid)
+	setHostname()
 
-	//	setHostname()
-
-	//		_ = execute("pacman -S iw wpa_supplicant dialog")
+	_ = executeInArchChroot("pacman -S iw wpa_supplicant dialog")
 
 	//		setPassword("root")
 
