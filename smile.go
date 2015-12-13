@@ -477,11 +477,15 @@ func main() {
 
 	//	rankMirrors()
 	fmt.Println("Instalando base Arch")
+
+
 	_ = execute("pacstrap /mnt base base-devel")
 
-	//	time.Sleep(10000 * time.Millisecond)
+	
+	fmt.Println("Efetuando configurações adicionais")
 
 	out := execute("genfstab -U /mnt") // > /mnt/etc/fstab")
+
 	writeFstab(out)
 
 	copyBaseConfig()
@@ -492,14 +496,18 @@ func main() {
 	_=executeInArchChroot("pacman -S f2fs-tools ntfs-3g dosfstools --noconfirm")
 
 	_=executeInArchChroot("pacman -S intel-ucode --noconfirm")
+	
 	_=executeInArchChroot("bootctl install")
 
+	fmt.Println(	
+	
 	uuid = getUuidPartition("/dev/" + partition.device + "2")
+	
 	writeBootConfiguration(uuid)
 
 	setHostname()
 
-	_ = executeInArchChroot("pacman -S iw wpa_supplicant dialog")
+	_ = executeInArchChroot("pacman -S iw wpa_supplicant dialog --noconfirm")
 
 	//		setPassword("root")
 
@@ -513,10 +521,10 @@ func main() {
 
 	//Drivers intel
 
-	//	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
+	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva")
 
-	//	_ = execute ("pacman -S mate")
-	//	time.Sleep(20000 * time.Millisecond)
+	_ = execute ("pacman -S pantheon --noconfirm")
 		
-
+	fmt.Println ("Instalação finalizada - Divirta-se :)")
+	
 }
