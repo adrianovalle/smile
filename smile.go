@@ -370,10 +370,10 @@ func writeBootConfiguration(uuid string) {
 //	_ = execute("mkdir /mnt/boot/loader")
 //	_ = execute("mkdir /mnt/boot/loader/entries")
 
-	data := []byte("title" + "\t" + "Arch Linux" +
-		"linux" + "\t" + "/vmlinuz-linux" +
-		"initrd" + "\t" + "/initramfs-linux.img" +
-		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid)
+	data := []byte("title" + "\t" + "Arch Linux" + "\n" +
+		"linux" + "\t" + "/vmlinuz-linux" + "\n" +
+		"initrd" + "\t" + "/initramfs-linux.img" + "\n" +
+		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid) 
 	err := ioutil.WriteFile("/mnt/boot/loader/entries/arch.conf", data, 0777)
 	check(err)
 
