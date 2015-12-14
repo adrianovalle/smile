@@ -367,8 +367,8 @@ func getUuidPartition(partition string) string {
 
 func writeBootConfiguration(uuid string) {
 
-	_ = execute("mkdir /mnt/boot/loader")
-	_ = execute("mkdir /mnt/boot/loader/entries")
+//	_ = execute("mkdir /mnt/boot/loader")
+//	_ = execute("mkdir /mnt/boot/loader/entries")
 
 	data := []byte("title" + "\t" + "Arch Linux" +
 		"linux" + "\t" + "/vmlinuz-linux" +
@@ -484,7 +484,7 @@ func main() {
 
 	writeBootConfiguration(uuid)
 
-	setHostname()
+	//setHostname()
 
 	_ = executeInArchChroot("pacman -S iw wpa_supplicant dialog --noconfirm")
 
@@ -502,11 +502,11 @@ func main() {
 
 	fmt.Println("Instalando drivers adicionais")
 
-	_ = execute("pacman -S 	xf86-video-intel mesa mesa-libgl libva-intel-driver libva --noconfirm")
+	_ = executeInArchChroot("pacman -S xf86-video-intel mesa mesa-libgl libva-intel-driver libva --noconfirm")
 
 	fmt.Println("Instalando interface grafica")
 
-	_ = execute("pacman -S pantheon --noconfirm")
+	_ = executeInArchChroot("pacman -S pantheon --noconfirm")
 
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
