@@ -405,12 +405,12 @@ func setPassword(user string) {
 
 }
 
-func addUser(username string, password string) {
-
+func addUser() {
+var username string
 	fmt.Println("Digite o nome do usuario")
-	fmt.Scanf("%s", username)
+	fmt.Scanf("%s", &username)
 
-	_ = executeInArchChroot("useradd -m -s /bin/bash -G wheel,users,audio,video,input,games " + username + " -p " + password)
+	_ = executeInArchChroot("useradd -m -s /bin/bash -G wheel,users,audio,video,input,games " + username)
 
 }
 
@@ -444,7 +444,7 @@ func main() {
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	//_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
 
 	//particionamento
 
@@ -484,13 +484,13 @@ func main() {
 
 	writeBootConfiguration(uuid)
 
-	//setHostname()
+//	setHostname()
 
 	_ = executeInArchChroot("pacman -S iw wpa_supplicant dialog --noconfirm")
 
 	//		setPassword("root")
 
-	//		addUser()
+			addUser()
 
 	//		setPassword(user)
 
@@ -506,7 +506,7 @@ func main() {
 
 	fmt.Println("Instalando interface grafica")
 
-	_ = executeInArchChroot("pacman -S pantheon --noconfirm")
+	_ = executeInArchChroot("pacman -S gnome --noconfirm")
 
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
