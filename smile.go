@@ -504,7 +504,11 @@ func main() {
 
 	fmt.Println("Instalando interface grafica")
 
-	_ = executeInArchChroot("pacman -S gnome --noconfirm")
+	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
+
+	_ = executeInArchChroot("systemctl enable sddm")
+
+	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git gvim --noconfirm") 	
 
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
