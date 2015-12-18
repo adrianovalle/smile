@@ -216,7 +216,7 @@ func (locale *Locale) writeLocale() {
 
 		_ = execute("loadkeys br-abnt2")
 
-		data := []byte("KEYMAP=br.abnt2" + "\n" +
+		data := []byte("KEYMAP=br-abnt2" + "\n" +
 			"FONT=lat1-16.psfu.gz")
 
 		err := ioutil.WriteFile("/etc/vconsole.conf", data, 0777)
