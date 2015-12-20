@@ -444,7 +444,7 @@ func main() {
 
 	connProfile.writeWifiConfigToFile("/etc/netctl")
 
-	_ = execute("netctl start " + connProfile.essid) //substitui o wifi-menu
+	_ = execute("netctl start " + "firstConnection") //substitui o wifi-menu
 
 	//particionamento
 
