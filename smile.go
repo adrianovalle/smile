@@ -123,8 +123,8 @@ func detectDevice() []string {
 }
 
 func rateMirrors() {
-
-	_ = execute("pacman -S reflector -- noconfirm")
+	_ = execute("pacman -Sy --noconfirm")
+	_ = execute("pacman -S reflector --noconfirm")
 	_ = execute("reflector -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist")
 
 }
@@ -508,7 +508,7 @@ func main() {
 
 	//	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
 
-	_ = executeInArchChroot("pacman -S cinnamon blueberry ---noconfirm")
+	_ = executeInArchChroot("pacman -S cinnamon blueberry --noconfirm")
 //	_ = executeInArchChroot("systemctl enable sddm")
 
 	_ = executeInArchChroot("pacman -S firefox chromium aria2 vlc libreoffice go git vim --noconfirm")
