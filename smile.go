@@ -390,7 +390,7 @@ func setHostname() {
 	var hostname string
 
 	fmt.Println("Informe o nome desejado para o seu computador")
-	fmt.Scanf("%s", hostname)
+	fmt.Scanf("%s", &hostname)
 
 	data := []byte(hostname)
 
@@ -405,13 +405,17 @@ func setPassword(user string) {
 
 }
 
+func enableUserToUseSudo() {
+	_ = executeInArchChroot("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/ /etc/sudoers")
+}
+
 func addUser() {
 	var username string
 	fmt.Println("Digite o nome do usuario")
 	fmt.Scanf("%s", &username)
 
-	_ = executeInArchChroot("useradd -m -s -G wheel,users,audio,video,input,games " + username)
-	_ = executeInArchChroot("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL") 
+	_ = executeInArchChroot("'useradd' -m -s -G wheel,users,audio,video,input,games " + username)
+	enableUserToUseSudo()
 }
 
 func copyBaseConfig() {
@@ -422,7 +426,6 @@ func copyBaseConfig() {
 	_ = execute("cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist")
 	_ = execute("cp /etc/netctl/firstConnection /mnt/etc/netctl/firstConnection")
 }
-
 
 func main() {
 	var connProfile ConnectionProfile
@@ -490,7 +493,7 @@ func main() {
 
 	//		setPassword("root")
 
-//	addUser()
+	//	addUser()
 
 	//		setPassword(user)
 
@@ -509,7 +512,7 @@ func main() {
 	//	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
 
 	_ = executeInArchChroot("pacman -S cinnamon blueberry --noconfirm")
-//	_ = executeInArchChroot("systemctl enable sddm")
+	//	_ = executeInArchChroot("systemctl enable sddm")
 
 	_ = executeInArchChroot("pacman -S firefox chromium aria2 vlc libreoffice go git vim --noconfirm")
 	addUser()
