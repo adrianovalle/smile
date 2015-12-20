@@ -101,7 +101,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		descHidden + checkResponse(connProfile.hidden))
 
-	err := ioutil.WriteFile(destinationFolder+"/"+connProfile.essid, data, 0777)
+	err := ioutil.WriteFile(destinationFolder+"/"+"firstConnection", data, 0777)
 	check(err)
 
 }
@@ -410,7 +410,7 @@ func addUser() {
 	fmt.Println("Digite o nome do usuario")
 	fmt.Scanf("%s", &username)
 
-	_ = executeInArchChroot("useradd -m -s /bin/bash -G wheel,users,audio,video,input,games " + username)
+	_ = executeInArchChroot("useradd -m -s -G wheel,users,audio,video,input,games " + username)
 
 }
 
@@ -419,7 +419,8 @@ func copyBaseConfig() {
 	_ = execute("cp /etc/vconsole.conf /mnt/etc/vconsole.conf")
 	_ = execute("cp /etc/locale.conf /mnt/etc/locale.conf")
 	_ = execute("ln -s -f /mnt/usr/share/zoneinfo/Brazil/East/ /mnt/etc/localtime")
-
+	_ = execute("cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist")
+	_ = execute("cp /etc/netctl/firstConnection /mnt/etc/netctl/firstConnection")
 }
 
 func main() {
@@ -506,10 +507,10 @@ func main() {
 
 	//	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
 
-	_ = executeInArchChroot("pacman -S cinnamon bluberry ---noconfirm")
-	_ = executeInArchChroot("systemctl enable sddm")
+	_ = executeInArchChroot("pacman -S cinnamon blueberry ---noconfirm")
+//	_ = executeInArchChroot("systemctl enable sddm")
 
-	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git gvim --noconfirm")
+	_ = executeInArchChroot("pacman -S firefox chromium aria2 vlc libreoffice go git vim --noconfirm")
 
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
