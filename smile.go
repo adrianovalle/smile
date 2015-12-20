@@ -122,12 +122,12 @@ func detectDevice() []string {
 	return regex
 }
 
-//func rankMirrors(){
+func rateMirrors() {
 
-//	fmt.Println("Será efetuado o processo de ranking dos servidores mais usados. Isso pode demorar alguns minutos")
-//	_ = execute ("cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
-//	_ = execute ("rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist")
-//}
+	_ = execute("pacman -S reflector -- noconfirm")
+	_ = execute("reflector -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist")
+
+}
 
 func (connProfile *ConnectionProfile) printConnectionProfile() {
 	fmt.Printf("%s", execute("clear"))
@@ -367,13 +367,13 @@ func getUuidPartition(partition string) string {
 
 func writeBootConfiguration(uuid string) {
 
-//	_ = execute("mkdir /mnt/boot/loader")
-//	_ = execute("mkdir /mnt/boot/loader/entries")
+	//	_ = execute("mkdir /mnt/boot/loader")
+	//	_ = execute("mkdir /mnt/boot/loader/entries")
 
 	data := []byte("title" + "\t" + "Arch Linux" + "\n" +
 		"linux" + "\t" + "/vmlinuz-linux" + "\n" +
 		"initrd" + "\t" + "/initramfs-linux.img" + "\n" +
-		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid) 
+		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid)
 	err := ioutil.WriteFile("/mnt/boot/loader/entries/arch.conf", data, 0777)
 	check(err)
 
@@ -406,7 +406,7 @@ func setPassword(user string) {
 }
 
 func addUser() {
-var username string
+	var username string
 	fmt.Println("Digite o nome do usuario")
 	fmt.Scanf("%s", &username)
 
@@ -456,7 +456,7 @@ func main() {
 	_ = execute("mkdir -p /mnt/boot")
 	_ = execute("mount /dev/" + partition.device + "1 /mnt/boot")
 
-	//	rankMirrors()
+	rateMirrors()
 
 	fmt.Println("Instalando base Arch")
 
@@ -488,7 +488,7 @@ func main() {
 
 	//		setPassword("root")
 
-			addUser()
+	addUser()
 
 	//		setPassword(user)
 
@@ -504,13 +504,12 @@ func main() {
 
 	fmt.Println("Instalando interface grafica")
 
-//	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
+	//	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
 
-
-	- = executeInArchChroot("pacman -S cinnamon bluberry ---noconfirm")
+	_ = executeInArchChroot("pacman -S cinnamon bluberry ---noconfirm")
 	_ = executeInArchChroot("systemctl enable sddm")
 
-	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git gvim --noconfirm") 	
+	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git gvim --noconfirm")
 
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
