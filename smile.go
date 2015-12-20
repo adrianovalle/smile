@@ -411,7 +411,7 @@ func addUser() {
 	fmt.Scanf("%s", &username)
 
 	_ = executeInArchChroot("useradd -m -s -G wheel,users,audio,video,input,games " + username)
-
+	_ = executeInArchChroot("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL") 
 }
 
 func copyBaseConfig() {
@@ -422,6 +422,7 @@ func copyBaseConfig() {
 	_ = execute("cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist")
 	_ = execute("cp /etc/netctl/firstConnection /mnt/etc/netctl/firstConnection")
 }
+
 
 func main() {
 	var connProfile ConnectionProfile
@@ -489,7 +490,7 @@ func main() {
 
 	//		setPassword("root")
 
-	addUser()
+//	addUser()
 
 	//		setPassword(user)
 
@@ -511,7 +512,7 @@ func main() {
 //	_ = executeInArchChroot("systemctl enable sddm")
 
 	_ = executeInArchChroot("pacman -S firefox chromium aria2 vlc libreoffice go git vim --noconfirm")
-
+	addUser()
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
 }
