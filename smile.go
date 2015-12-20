@@ -520,7 +520,7 @@ func main() {
 
 	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender  --noconfirm")
 
-	_ = executeInArchChroot("pacman -S yaourt")
+//	_ = executeInArchChroot("pacman -S yaourt")
 	addUser()
 
 	_ = executeInArchChroot("pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer --noconfirm")
