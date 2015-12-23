@@ -427,6 +427,32 @@ func copyBaseConfig() {
 	_ = execute("cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist")
 	_ = execute("cp /etc/netctl/firstConnection /mnt/etc/netctl/firstConnection")
 }
+func selectWM() {
+	var wm string
+
+	fmt.Println("Qual gerenciador de janelas você deseja?")
+	fmt.Println("[Gnome KDE Cinnamon]")
+	switch wm {
+
+	case "Gnome":
+
+		_ = executeInArchChroot("pacman -S gnome gnome-terminal gnome-system-monitor --noconfirm")
+
+		_ = executeInArchChroot("systemctl enable gdm")
+
+	case "KDE":
+
+		_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
+
+		_ = executeInArchChroot("systemctl enable sddm")
+
+	case "Cinnamon":
+
+		_ = executeInArchChroot("pacman -S cinnamon blueberry --noconfirm")
+
+	}
+
+}
 
 func main() {
 	var connProfile ConnectionProfile
@@ -510,21 +536,19 @@ func main() {
 
 	fmt.Println("Instalando interface grafica")
 
-	//	_ = executeInArchChroot("pacman -S plasma sddm breeze-kde4 breeze-gtk plasma-pa ttf-dejavu ttf-liberation yakuake kde-gtk-config systemd-kcm --noconfirm")
+	selectWM()
 
-	//_ = executeInArchChroot("pacman -S cinnamon blueberry --noconfirm")
-	//	_ = executeInArchChroot("systemctl enable sddm")
-
-	_ = executeInArchChroot("pacman -S gnome gnome-terminal gnome-system-monitor --noconfirm")
-
-	_ = executeInArchChroot("systemctl enable gdm")
-
+	fmt.Println("Instalando aplicativos")
 	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender  --noconfirm")
 
-//	_ = executeInArchChroot("pacman -S yaourt")
-	addUser()
+	//	_ = executeInArchChroot("pacman -S yaourt")
+
+	fmt.Println("Instalando codecs")
 
 	_ = executeInArchChroot("pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer --noconfirm")
+
+	//addUser()
+
 	fmt.Println("Instalacao finalizada - Divirta-se :)")
 
 }
