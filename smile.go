@@ -532,7 +532,7 @@ func main() {
 
 	fmt.Println("Instalando drivers adicionais")
 
-	_ = executeInArchChroot("pacman -S xf86-video-intel mesa mesa-libgl libva-intel-driver libva --noconfirm")
+	_ = executeInArchChroot("pacman -S xf86-video-intel mesa-libgl libva-intel-driver libvdpau-va-gl --noconfirm")
 
 	fmt.Println("Instalando interface grafica")
 
