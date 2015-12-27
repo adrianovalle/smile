@@ -12,7 +12,7 @@ import (
 	//	"time"
 )
 
-const version = "0.5.0"
+const version = "0.7.0"
 
 var verbose bool
 
@@ -568,6 +568,8 @@ func main() {
 
 	_ = executeInArchChroot("pacman -S xf86-video-intel mesa-libgl libva-intel-driver libvdpau-va-gl --noconfirm")
 
+
+
 	fmt.Println("Instalando interface grafica")
 
 	selectWM()
@@ -581,6 +583,8 @@ func main() {
 
 	_ = executeInArchChroot("pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer --noconfirm")
 
+	//enableUserToUseSudo()
+	
 	//addUser()
 
 	fmt.Println("Instalação finalizada - Divirta-se :)")
