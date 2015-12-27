@@ -449,6 +449,10 @@ func selectWM() {
 	case "Cinnamon":
 
 		_ = executeInArchChroot("pacman -S cinnamon blueberry --noconfirm")
+	
+	case "Deepin":
+
+	_ = executeInArchChroot("pacman -S deepin deepin-extra deepin-game deepin-movie deepin-music deepin-screenshot deepin-terminal")
 
 	}
 
