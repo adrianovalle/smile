@@ -431,7 +431,7 @@ func selectWM() {
 	var wm string
 
 	fmt.Println("Qual gerenciador de janelas você deseja?")
-	fmt.Println("[Gnome KDE Cinnamon]")
+	fmt.Println("[Gnome KDE Cinnamon Deepin]")
 	switch wm {
 
 	case "Gnome":
@@ -452,7 +452,7 @@ func selectWM() {
 	
 	case "Deepin":
 
-	_ = executeInArchChroot("pacman -S deepin deepin-extra deepin-game deepin-movie deepin-music deepin-screenshot deepin-terminal")
+	_ = executeInArchChroot("pacman -S deepin deepin-extra deepin-game deepin-movie deepin-music deepin-screenshot deepin-terminal deepin-session-ui --noconfirm")
 
 	}
 
@@ -469,7 +469,7 @@ func addYaourt(){
 	        err := ioutil.WriteFile("/mnt/etc/pacman.conf", oldData + newData , 0666)
 	check(err)
 
-	_ = executeInArchChroot("pacman -Sy yaourt")
+	_ = executeInArchChroot("pacman -Sy yaourt -noconfirm")
 
 }
 
@@ -559,7 +559,7 @@ func main() {
 
 	//Instalando o Xorg padrão
 
-	- = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa") 
+	- = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa --noconfirm") 
 
 
 	//Drivers intel
