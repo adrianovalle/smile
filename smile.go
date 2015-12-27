@@ -406,7 +406,7 @@ func setPassword(user string) {
 }
 
 func enableUserToUseSudo() {
-	_ = executeInArchChroot("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/ /etc/sudoers")
+	_ = executeInArchChroot("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers")
 }
 
 func addUser() {
@@ -583,6 +583,6 @@ func main() {
 
 	//addUser()
 
-	fmt.Println("Instalacao finalizada - Divirta-se :)")
+	fmt.Println("Instalação finalizada - Divirta-se :)")
 
 }
