@@ -101,7 +101,7 @@ func (connProfile *ConnectionProfile) writeWifiConfigToFile(destinationFolder st
 
 		descHidden + checkResponse(connProfile.hidden))
 
-	err := ioutil.WriteFile(destinationFolder+"/"+"firstConnection", data, 0777)
+	err := ioutil.WriteFile(destinationFolder+"/"+"firstConnection", data, 0666)
 	check(err)
 
 }
@@ -160,7 +160,7 @@ func (connProfile *ConnectionProfile) setConnectionProfile() *ConnectionProfile 
 		fmt.Scanf("%s", &wifiInterface)
 
 		fmt.Printf("Informe o tipo de conexão \n")
-		fmt.Println("[wireless ethernet]")
+		fmt.Println("[wireless]")
 		fmt.Scanf("%s", &connectionType)
 
 		fmt.Printf("Informe o tipo de segurança wi-fi \n")
@@ -208,7 +208,7 @@ func (locale *Locale) writeLocale() {
 
 	if locale.language == "PTBR" {
 		data := []byte("LANG=pt_BR.UTF-8")
-		err := ioutil.WriteFile("/etc/locale.conf", data, 0777)
+		err := ioutil.WriteFile("/etc/locale.conf", data, 0666)
 		check(err)
 	}
 
@@ -219,7 +219,7 @@ func (locale *Locale) writeLocale() {
 		data := []byte("KEYMAP=br-abnt2" + "\n" +
 			"FONT=lat1-16.psfu.gz")
 
-		err := ioutil.WriteFile("/etc/vconsole.conf", data, 0777)
+		err := ioutil.WriteFile("/etc/vconsole.conf", data, 0666)
 		check(err)
 	}
 
@@ -240,7 +240,7 @@ func (locale *Locale) setLocale() *Locale {
 		fmt.Println("[PTBR]")
 		fmt.Scanf("%s", &language)
 
-		fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você desa usá-la?")
+		fmt.Println("Existe um padrão de teclado definido para sua linguagem. Você deseja usá-la?")
 		fmt.Println("[br-abnt2]")
 		fmt.Scanf("%s", &keyboardLayout)
 
@@ -293,7 +293,7 @@ func (partition *Partition) setPartition() *Partition {
 		fmt.Scanf("%s", &filesystem)
 
 		fmt.Println("Informe a tabela de partição")
-		fmt.Println("[msdos gpt]")
+		fmt.Println("[gpt]")
 		fmt.Scanf("%s", &partitionTable)
 
 		*partition = Partition{device, filesystem, partitionTable}
@@ -374,7 +374,7 @@ func writeBootConfiguration(uuid string) {
 		"linux" + "\t" + "/vmlinuz-linux" + "\n" +
 		"initrd" + "\t" + "/initramfs-linux.img" + "\n" +
 		"options" + "\t" + "root=/dev/disk/by-uuid/" + uuid)
-	err := ioutil.WriteFile("/mnt/boot/loader/entries/arch.conf", data, 0777)
+	err := ioutil.WriteFile("/mnt/boot/loader/entries/arch.conf", data, 0666)
 	check(err)
 
 }
@@ -394,7 +394,7 @@ func setHostname() {
 
 	data := []byte(hostname)
 
-	err := ioutil.WriteFile("/mnt/etc/hostname", data, 0777)
+	err := ioutil.WriteFile("/mnt/etc/hostname", data, 0666)
 
 	check(err)
 }
@@ -453,6 +453,22 @@ func selectWM() {
 	}
 
 }
+
+func addYaourt(){
+
+	oldData,err := ioutil.ReadFile("/mnt/etc/pacman.conf")
+	check(err)
+
+        newData := []byte("\n" + "[archlinuxfr]" + "\n" +
+		       "SigLevel = Never" + "\n" +
+		       "Server = http://repo.archlinux.fr/$arch")
+	        err := ioutil.WriteFile("/mnt/etc/pacman.conf", oldData + newData , 0666)
+	check(err)
+
+	_ = executeInArchChroot("pacman -Sy yaourt")
+
+}
+
 
 func main() {
 	var connProfile ConnectionProfile
@@ -526,7 +542,21 @@ func main() {
 
 	//	_ = execute ("umount -R /mnt")
 
+
+//	Adicionando Yaourt
+
+	addYaourt()
+
 	//Perfis instalacao
+
+
+
+
+
+	//Instalando o Xorg padrão
+
+	- = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa") 
+
 
 	//Drivers intel
 
