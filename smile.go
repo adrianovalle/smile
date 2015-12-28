@@ -9,7 +9,9 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+
 	//	"time"
+
 )
 
 const version = "0.7.0"
@@ -459,14 +461,16 @@ func selectWM() {
 }
 
 func addYaourt(){
-
-	oldData,err := ioutil.ReadFile("/mnt/etc/pacman.conf")
+var oldData []byte
+var err error
+	oldData,err = ioutil.ReadFile("/mnt/etc/pacman.conf")
 	check(err)
 
         newData := []byte("\n" + "[archlinuxfr]" + "\n" +
 		       "SigLevel = Never" + "\n" +
 		       "Server = http://repo.archlinux.fr/$arch")
-	        err := ioutil.WriteFile("/mnt/etc/pacman.conf", oldData + newData , 0666)
+	sumData:=append(oldData,newData...)
+	err = ioutil.WriteFile("/mnt/etc/pacman.conf",  sumData , 0666)
 	check(err)
 
 	_ = executeInArchChroot("pacman -Sy yaourt -noconfirm")
@@ -559,7 +563,7 @@ func main() {
 
 	//Instalando o Xorg padrão
 
-	- = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa --noconfirm") 
+	_ = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa --noconfirm") 
 
 
 	//Drivers intel
