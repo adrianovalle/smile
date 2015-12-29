@@ -456,6 +456,10 @@ func selectWM() {
 
 	_ = executeInArchChroot("pacman -S deepin deepin-extra deepin-game deepin-movie deepin-music deepin-screenshot deepin-terminal deepin-session-ui --noconfirm")
 
+
+	case "Mate":
+
+	_= executeInArchChroot("pacman -S mate mate-extra mate-accountsdialog mate-applet-lockkeys mate-applet-streamer mate-color-manager mate-disk-utility variety mate-power-manager network-manager-applet")
 	}
 
 }
@@ -579,7 +583,7 @@ func main() {
 	selectWM()
 
 	fmt.Println("Instalando aplicativos")
-	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender  --noconfirm")
+	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender blueman  --noconfirm")
 
 	//	_ = executeInArchChroot("pacman -S yaourt")
 
