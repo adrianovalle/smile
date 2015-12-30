@@ -9,9 +9,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-
 	//	"time"
-
 )
 
 const version = "0.7.0"
@@ -433,7 +431,7 @@ func selectWM() {
 	var wm string
 
 	fmt.Println("Qual gerenciador de janelas você deseja?")
-	fmt.Println("[Gnome KDE Cinnamon Deepin MATE]")
+	fmt.Println("[Gnome KDE Cinnamon Deepin MATE i3]")
 	switch wm {
 
 	case "Gnome":
@@ -451,36 +449,39 @@ func selectWM() {
 	case "Cinnamon":
 
 		_ = executeInArchChroot("pacman -S cinnamon blueberry --noconfirm")
-	
+
 	case "Deepin":
 
-	_ = executeInArchChroot("pacman -S deepin deepin-extra deepin-game deepin-movie deepin-music deepin-screenshot deepin-terminal deepin-session-ui --noconfirm")
-
+		_ = executeInArchChroot("pacman -S deepin deepin-extra deepin-game deepin-movie deepin-music deepin-screenshot deepin-terminal deepin-session-ui --noconfirm")
 
 	case "Mate":
 
-	_= executeInArchChroot("pacman -S mate mate-extra mate-accountsdialog mate-applet-lockkeys mate-applet-streamer mate-color-manager mate-disk-utility variety mate-power-manager network-manager-applet --noconfirm")
+		_ = executeInArchChroot("pacman -S mate mate-extra mate-accountsdialog mate-applet-lockkeys mate-applet-streamer mate-color-manager mate-disk-utility variety mate-power-manager network-manager-applet --noconfirm")
+
+	case "i3":
+
+		_ = executeInArchChroot("pacman -S i3")
+
 	}
 
 }
 
-func addYaourt(){
-var oldData []byte
-var err error
-	oldData,err = ioutil.ReadFile("/mnt/etc/pacman.conf")
+func addYaourt() {
+	var oldData []byte
+	var err error
+	oldData, err = ioutil.ReadFile("/mnt/etc/pacman.conf")
 	check(err)
 
-        newData := []byte("\n" + "[archlinuxfr]" + "\n" +
-		       "SigLevel = Never" + "\n" +
-		       "Server = http://repo.archlinux.fr/$arch")
-	sumData:=append(oldData,newData...)
-	err = ioutil.WriteFile("/mnt/etc/pacman.conf",  sumData , 0666)
+	newData := []byte("\n" + "[archlinuxfr]" + "\n" +
+		"SigLevel = Never" + "\n" +
+		"Server = http://repo.archlinux.fr/$arch")
+	sumData := append(oldData, newData...)
+	err = ioutil.WriteFile("/mnt/etc/pacman.conf", sumData, 0666)
 	check(err)
 
 	_ = executeInArchChroot("pacman -Sy yaourt -noconfirm")
 
 }
-
 
 func main() {
 	var connProfile ConnectionProfile
@@ -554,29 +555,21 @@ func main() {
 
 	//	_ = execute ("umount -R /mnt")
 
-
-//	Adicionando Yaourt
+	//	Adicionando Yaourt
 
 	addYaourt()
 
 	//Perfis instalacao
 
-
-
-
-
 	//Instalando o Xorg padrão
 
-	_ = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa --noconfirm") 
-
+	_ = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa --noconfirm")
 
 	//Drivers intel
 
 	fmt.Println("Instalando drivers adicionais")
 
 	_ = executeInArchChroot("pacman -S xf86-video-intel mesa-libgl libva-intel-driver libvdpau-va-gl --noconfirm")
-
-
 
 	fmt.Println("Instalando interface grafica")
 
@@ -592,7 +585,7 @@ func main() {
 	_ = executeInArchChroot("pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer --noconfirm")
 
 	//enableUserToUseSudo()
-	
+
 	//addUser()
 
 	fmt.Println("Instalação finalizada - Divirta-se :)")
