@@ -433,7 +433,7 @@ func selectWM() {
 	var wm string
 
 	fmt.Println("Qual gerenciador de janelas você deseja?")
-	fmt.Println("[Gnome KDE Cinnamon Deepin]")
+	fmt.Println("[Gnome KDE Cinnamon Deepin MATE]")
 	switch wm {
 
 	case "Gnome":
@@ -459,7 +459,7 @@ func selectWM() {
 
 	case "Mate":
 
-	_= executeInArchChroot("pacman -S mate mate-extra mate-accountsdialog mate-applet-lockkeys mate-applet-streamer mate-color-manager mate-disk-utility variety mate-power-manager network-manager-applet")
+	_= executeInArchChroot("pacman -S mate mate-extra mate-accountsdialog mate-applet-lockkeys mate-applet-streamer mate-color-manager mate-disk-utility variety mate-power-manager network-manager-applet --noconfirm")
 	}
 
 }
