@@ -460,7 +460,7 @@ func selectWM() {
 
 	case "i3":
 
-		_ = executeInArchChroot("pacman -S i3")
+		_ = executeInArchChroot("pacman -S i3 --noconfirm")
 
 	}
 
