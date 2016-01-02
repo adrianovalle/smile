@@ -576,7 +576,7 @@ func main() {
 	selectWM()
 
 	fmt.Println("Instalando aplicativos")
-	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender blueman  --noconfirm")
+	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender blueman jre7-openjdk icedtea-web --noconfirm")
 
 	//	_ = executeInArchChroot("pacman -S yaourt")
 
