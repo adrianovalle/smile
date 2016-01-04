@@ -505,6 +505,11 @@ func main() {
 
 	_ = execute("netctl start " + "firstConnection") //substitui o wifi-menu
 
+	fmt.Println("Qual instalação você deseja efetuar?")
+	fmt.Println("[Normal Mínimo]")
+
+
+
 	//particionamento
 
 	uefi = setUefi()
