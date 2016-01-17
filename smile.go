@@ -406,7 +406,7 @@ func setPassword(user string) {
 }
 
 func enableUserToUseSudo() {
-	_ = executeInArchChroot("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers")
+	_ = execute("sed -i '/s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers")
 }
 
 func addUser() {
@@ -414,7 +414,7 @@ func addUser() {
 	fmt.Println("Digite o nome do usuario")
 	fmt.Scanf("%s", &username)
 
-	_ = executeInArchChroot("'useradd' -m -s -G wheel,users,audio,video,input,games " + username)
+	_ = executeInArchChroot("'useradd' -m -s /bin/bash -G wheel,users,audio,video,input,games " + username)
 	enableUserToUseSudo()
 }
 
@@ -432,13 +432,16 @@ func selectWM() {
 
 	fmt.Println("Qual gerenciador de janelas você deseja?")
 	fmt.Println("[Gnome KDE Cinnamon Deepin MATE i3]")
+	fmt.Scanf("%s",&wm)
 	switch wm {
 
 	case "Gnome":
 
-		_ = executeInArchChroot("pacman -S gnome gnome-terminal gnome-system-monitor --noconfirm")
+		_ = executeInArchChroot("pacman -S gnome gnome-terminal gnome-system-monitor gparted gnome-software gnome-packagekit network-manager-applet --noconfirm")
 
 		_ = executeInArchChroot("systemctl enable gdm")
+		
+		_ = executeInArchChroot("systemctl enable NetworkManager") 
 
 	case "KDE":
 
@@ -505,8 +508,8 @@ func main() {
 
 	_ = execute("netctl start " + "firstConnection") //substitui o wifi-menu
 
-	fmt.Println("Qual instalação você deseja efetuar?")
-	fmt.Println("[Normal Mínimo]")
+//	fmt.Println("Qual instalação você deseja efetuar?")
+//	fmt.Println("[Normal Mínimo]")
 
 
 
@@ -562,13 +565,13 @@ func main() {
 
 	//	Adicionando Yaourt
 
-	addYaourt()
+	//addYaourt()
 
 	//Perfis instalacao
 
 	//Instalando o Xorg padrão
 
-	_ = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xinit mesa --noconfirm")
+	_ = executeInArchChroot("pacman -S xorg-server xorg-server-utils xorg-utils xorg-xinit mesa --noconfirm")
 
 	//Drivers intel
 
@@ -581,13 +584,17 @@ func main() {
 	selectWM()
 
 	fmt.Println("Instalando aplicativos")
-	_ = executeInArchChroot("pacman -S firefox aria2 vlc libreoffice go git vim synaptics flashplugin unzip unrar deluge gimp blender blueman jre7-openjdk icedtea-web --noconfirm")
+	_ = executeInArchChroot("pacman -S firefox aria2 vlc chromium hardinfo go git vim synaptics flashplugin unzip unrar deluge gimp blender blueman jre7-openjdk icedtea-web libreoffice-fresh-pt-BR --noconfirm")
 
 	//	_ = executeInArchChroot("pacman -S yaourt")
 
+
+	_ = executeInArchChroot("pacman -S eclipse-java jdk7-openjdk openjdk7-doc maven mysql-workbench mariadb groovy --noconfirm")
+
+
 	fmt.Println("Instalando codecs")
 
-	_ = executeInArchChroot("pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer --noconfirm")
+	_ = executeInArchChroot("pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 x265 xvidcore gstreamer --noconfirm")
 
 	//enableUserToUseSudo()
 
