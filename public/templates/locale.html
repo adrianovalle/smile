@@ -1,0 +1,25 @@
+{{ define "locale"}}
+{{template "head"}}
+<div class="inner cover">
+    <h1 class="cover-heading">Instalação ArchLinux</h1>
+    <p class="lead">"Qual a língua que você deseja?"</p>
+    <p class="lead">
+      <form action="/timezone" method="POST">
+
+        <div class="form-group">
+             <label for ="language">Nome do usuário</label>
+			<input id="inputLanguage" name="language" class="form-control">
+		</div>
+    		<p class="lead">"Qual teclado você utiliza?"</p>
+		<div class="form-group>">
+			<label for="keyboard">teclado</label>
+			<input id="inputKeyboard" name="keyboard" class="form-control">
+        </div>   
+		<div>    
+	 		<p><button type="submit" name="begin" class="btn btn-lg btn-default">Iniciar</button>
+		</div>
+      </form>
+    </p>
+</div>
+{{template "footer"}}
+{{end}}

@@ -1,0 +1,20 @@
+{{define "timezone"}}
+{{ template "head" }}
+
+<div class="inner cover">
+    <h1 class="cover-heading">Instalação ArchLinux</h1>
+    <p class="lead">Qual seu fuso horário?</p>
+    <p class="lead">
+      <form action="/" method="POST">
+
+        <div class="form-group">
+             <label for ="timezone">Nome do usuário</label>
+			<input id="inputTimezone" name="timezone" class="form-control">
+		</div>
+		<p><button type="submit" name="begin" class="btn btn-lg btn-default">Iniciar</button>
+		</div>
+      </form>
+    </p>
+</div>
+{{ template "footer" }}
+{{ end }}
