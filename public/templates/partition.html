@@ -1,0 +1,16 @@
+{{ define "partition" }}
+{{ template "head" }}
+
+<div class="inner cover">
+	<h2 class="cover-heading">Começaremos pela escolha da partição. Qual unidade você deseja instalar o ArchLinux?<h2>
+    <p class="lead"></p>
+    <p class="lead">
+      <form action="/user" method="POST">
+          <div class="form-group">
+              <button type="submit" name="begin" class="btn btn-lg btn-default">Iniciar</button>
+          </div>       
+      </form>
+    </p>
+</div>
+{{ template "footer" }}
+{{ end }}

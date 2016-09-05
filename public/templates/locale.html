@@ -1,0 +1,25 @@
+{{ define "locale"}}
+{{template "head"}}
+<div class="inner cover">
+    <h2 class="cover-heading">Informe a língua inicial do sistema e o tipo de seu teclado</h2>
+
+    <p class="lead">
+      <form action="/timezone" method="POST">
+
+        <div class="form-group">
+             <label for ="language">Qual língua inicial você deseja?</label>
+			<input id="inputLanguage" name="language" class="form-control">
+		</div>
+    		
+		<div class="form-group>">
+			<label for="keyboard">Qual teclado você utiliza?</label>
+			<input id="inputKeyboard" name="keyboard" class="form-control">
+        </div>   
+		<div>    
+	 		<p><button type="submit" name="begin" class="btn btn-lg btn-default">Iniciar</button>
+		</div>
+      </form>
+    </p>
+</div>
+{{template "footer"}}
+{{end}}

@@ -1,0 +1,16 @@
+{{ define "home" }}
+{{ template "head" }}
+<div class="inner cover">
+    <h1 class="cover-heading">Instalação ArchLinux</h1>
+    <p class="lead"></p>
+    <p class="lead">
+      <form action="/partition" method="POST">
+          <div class="form-group">
+              <h3>Esta é uma interface gráfica para instalação do ArchLinux. Use somente se souber o que está fazendo, sob pena de perder dados.</h3>
+              <button type="submit" name="begin" class="btn btn-lg btn-default">Iniciar</button>
+          </div>       
+      </form>
+    </p>
+</div>
+{{ template "footer" }}
+{{ end }}

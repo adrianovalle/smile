@@ -1,0 +1,24 @@
+{{ define "user" }}
+{{ template "head" }}
+
+<div class="inner cover">
+    <h2 class="cover-heading">Informe usuário inicial e senha</h2>
+    <p class="lead">
+      <form action="/locale" method="POST">
+
+        <div class="form-group">
+             <label for ="username">Nome do usuário</label>
+			<input id="inputUsername" name="username" class="form-control">
+		</div>
+		<div class="form-group>">
+			<label for="password">Senha</label>
+			<input id="inputPassword" name="password" type="password" class="form-control">
+        </div>   
+		<div>    
+	 		<p><button type="submit" name="begin" class="btn btn-lg btn-default">Iniciar</button>
+		</div>
+      </form>
+    </p>
+</div>
+{{ template "footer" }}
+{{ end }}
